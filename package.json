@@ -1,0 +1,22 @@
+{
+  "name": "ta-mere-en-slip",
+  "version": "1.0.0",
+  "description": "WebApp for the famous TaMereEnSlip card game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Timeo1210/TaMereEnSlip.git"
+  },
+  "author": "Boulhol Timeo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Timeo1210/TaMereEnSlip/issues"
+  },
+  "homepage": "https://github.com/Timeo1210/TaMereEnSlip#readme",
+  "devDependencies": {
+    "create-react-app": "^3.4.1"
+  }
+}
