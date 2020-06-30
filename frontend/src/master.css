@@ -1,0 +1,78 @@
+:root {
+    --secondary-bg-color: #1e1e2a;
+    --primary-bg-color: #242433;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    color: #FFF;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+img, svg {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    height: 100%;
+}
+
+.globalWarning {
+    background: #C13E3E;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    font-size: 13px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.globalWarning div:first-child {
+    margin-bottom: 3px;
+}
+.globalWarning div:first-child img {
+    transform: translateY(1px);
+    margin-right: 3px;
+}
+
+.globalWarning img {
+    width: 12px;
+    height: 12px;
+}
+.globalWarning span {
+    font-weight: bold;
+}
+
+

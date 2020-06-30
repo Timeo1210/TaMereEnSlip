@@ -1,0 +1,11 @@
+.container {
+    /*background: url("../../assets/night_background.svg");*/
+    background: url("../../assets/village_background2.jpg");
+    background-size: cover;
+    background-position: bottom;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
