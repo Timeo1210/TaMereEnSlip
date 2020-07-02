@@ -8,7 +8,7 @@
     width: 80vw;
     max-width: 402px;
     transition: transform ease 1s;
-    overflow: hidden;
+    position: relative;
 }
 
 .header {
@@ -96,4 +96,14 @@
 
 .createPlayerButton:active {
     box-shadow: none;
+}
+
+.imageProfilContainer {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background: rgba(27, 27, 39, 1);
+    z-index: 2;
 }

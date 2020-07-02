@@ -6,6 +6,7 @@ import { PlayerContext } from '../Contexts/PlayerContext';
 import { config } from '../../../config';
 import Warning from '../../../assets/warning.svg';
 import axios from 'axios';
+import ChooseImageProfil from './ChooseImageProfil';
 
 function CreatePlayer(props) {
 
@@ -15,9 +16,15 @@ function CreatePlayer(props) {
 
     const [invalidPlayer, setInvalidPlayer] = useState(false);
     const [errorMessage, setErrorMessage] = useState("L'utilisateur ne correspond pas a vous ou n'existe pas");
+    const [chooseImageProfil, setChooseImageProfil] = useState(false);
 
     const socketContext = useContext(SocketContext);
     const playerContext = useContext(PlayerContext);
+
+    const allImages = [
+        "standard",
+        "iroquoise_hair",
+    ];
 
     const userIsLogged = (data) => {
         localStorage.setItem('socketId', data.data.socketId);
@@ -52,13 +59,16 @@ function CreatePlayer(props) {
             }
         });
     }
-    const handleCreatePlayer = () => {
+    const handleCreatePlayer = (imageIndex) => {
+        const imageProfil = allImages[imageIndex];
+        setChooseImageProfil(false)
         axios({
             method: 'POST',
             url: `${config.ENDPOINT}/users/new`,
             params: {
                 username: pseudoRef.current.value,
                 socketId: socketContext.id,
+                imageProfil,
             }
         }).then((data) => {
             userIsLogged(data)
@@ -67,25 +77,34 @@ function CreatePlayer(props) {
                 setErrorMessage("L'utilisateur existe déjà");
                 setInvalidPlayer(true);
             }
-        })
+        });
+    }
+    const handleCreatePlayerButton = () => {
+        setChooseImageProfil(true);
     }
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             handleSubmit();
         }
     }
+    const handleChooseImageProfilClose = () => {
+        setChooseImageProfil(false)
+    }
 
     return (
         <div ref={containerRef} className={styles.container}>
             {invalidPlayer && (
-                <div className="globalWarning">
-                    <div>
-                        <img src={Warning} alt="warning"/>
-                        <span>Erreur :</span>
+                <>
+                    <div className="globalWarning">
+                        <div>
+                            <img src={Warning} alt="warning"/>
+                            <span>Erreur :</span>
+                        </div>
+                        <p>{errorMessage}</p>
+                        <button onClick={handleCreatePlayerButton} className={styles.createPlayerButton}>Créer un compte</button>
                     </div>
-                    <p>{errorMessage}</p>
-                    <button onClick={handleCreatePlayer} className={styles.createPlayerButton}>Créer un compte</button>
-                </div>
+                    {chooseImageProfil && <ChooseImageProfil allImages={allImages} handleCreatePlayer={handleCreatePlayer} handleChooseImageProfilClose={handleChooseImageProfilClose} />}
+                </>
             )}
             <div className={styles.header}>
                 <div className={styles.header__bar} ></div>
