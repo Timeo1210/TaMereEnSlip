@@ -53,17 +53,31 @@ router.put('/test', async (req, res) => {
 
 router.get('/', async (req, res) => {
     // console.log(req.headers);
-    const rooms = (await Room.find()).sort((a, b) => {
+    const rooms = (await Room.find().lean()).sort((a, b) => {
         const nA = a.isJoinable === true ? -1 : 1;
         const nB = b.isJoinable === true ? -1 : 1;
         return nA + nB;
     });
+    if (req.query.withPlayersKey === 'imageProfil') {
+        console.log("YES");
+        for (let i = 0; i < rooms.length; i++) {
+            if (rooms[i].players.length !== 0) {
+                const newPlayers = await Promise.all(rooms[i].players.map(async (elem) => {
+                    const player = await Player.findById(elem);
+                    const { imageProfil } = player;
+                    return {imageProfil};
+                }));
+                rooms[i].players = newPlayers;
+            }
+        }
+    }
     res.json({
-        "data": JSON.stringify(rooms),
+        "rooms": JSON.stringify(rooms),
     });
 });
 
 router.post('/', customMiddlewares.authPlayer, async (req, res) => {
+    // set max_pplayer
     const room = new Room({
         name: req.query.name,
     });

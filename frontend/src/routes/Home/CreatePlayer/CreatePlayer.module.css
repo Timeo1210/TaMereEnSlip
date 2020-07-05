@@ -9,6 +9,7 @@
     max-width: 402px;
     transition: transform ease 1s;
     position: relative;
+    margin-top: 2rem;
 }
 
 .header {

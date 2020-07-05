@@ -4,7 +4,7 @@ import { SocketProvider } from './Contexts/SocketContext';
 import { PlayerProvider } from './Contexts/PlayerContext';
 
 import CreatePlayer from './CreatePlayer';
-import PlayersList from './PlayersList';
+import RoomsJoin from './RoomsJoin';
 
 class Home extends React.Component {
 
@@ -36,7 +36,7 @@ class Home extends React.Component {
                 <SocketProvider>
                 <PlayerProvider>
                     { !isPlayerLogged && <CreatePlayer handleIsPlayerLogged={this.handleIsPlayerLogged} />}
-                    <PlayersList isPlayerLogged={isPlayerLogged} />
+                    <RoomsJoin isPlayerLogged={isPlayerLogged} />
                 </PlayerProvider>
                 </SocketProvider>
             </div>

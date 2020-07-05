@@ -6,8 +6,9 @@
     border: 2px solid rgba(27, 27, 39, 0.85);
     border-radius: 15px;
     width: 80vw;
-    max-width: 70vw;
+    max-width: 65vw;
     transition: transform ease 1s;
-    overflow: hidden;
-    margin-top: 50px;
+    position: relative;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
 }
