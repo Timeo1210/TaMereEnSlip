@@ -1,7 +1,5 @@
 import React from 'react';
 import styles from './Home.module.css';
-import { SocketProvider } from './Contexts/SocketContext';
-import { PlayerProvider } from './Contexts/PlayerContext';
 
 import CreatePlayer from './CreatePlayer';
 import RoomsJoin from './RoomsJoin';
@@ -18,10 +16,6 @@ class Home extends React.Component {
         this.handleIsPlayerLogged = this.handleIsPlayerLogged.bind(this);
     }
 
-    componentDidMount() {
-
-    }
-
     handleIsPlayerLogged() {
         this.setState({
             isPlayerLogged: true
@@ -30,15 +24,10 @@ class Home extends React.Component {
 
     render() {
         const { isPlayerLogged } = this.state;
-        console.log(isPlayerLogged)
         return (
             <div className={styles.container}>
-                <SocketProvider>
-                <PlayerProvider>
-                    { !isPlayerLogged && <CreatePlayer handleIsPlayerLogged={this.handleIsPlayerLogged} />}
-                    <RoomsJoin isPlayerLogged={isPlayerLogged} />
-                </PlayerProvider>
-                </SocketProvider>
+                { !isPlayerLogged && <CreatePlayer handleIsPlayerLogged={this.handleIsPlayerLogged} />}
+                <RoomsJoin isPlayerLogged={isPlayerLogged} />
             </div>
         );
     }

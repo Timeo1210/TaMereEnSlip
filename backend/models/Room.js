@@ -41,6 +41,10 @@ const roomSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    isGameHasStart: {
+        type: Boolean,
+        default: false,
+    },
 }, {
     toObject: {
         virtuals: true,

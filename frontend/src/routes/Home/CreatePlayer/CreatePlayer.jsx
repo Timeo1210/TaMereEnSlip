@@ -1,8 +1,8 @@
 import React, { useRef, useContext, useState } from 'react';
 
 import styles from './CreatePlayer.module.css';
-import { SocketContext } from '../Contexts/SocketContext';
-import { PlayerContext } from '../Contexts/PlayerContext';
+import { SocketContext } from '../../Contexts/SocketContext';
+import { PlayerContext } from '../../Contexts/PlayerContext';
 import { config } from '../../../config';
 import Warning from '../../../assets/warning.svg';
 import axios from 'axios';
@@ -28,6 +28,7 @@ function CreatePlayer(props) {
 
     const userIsLogged = (data) => {
         localStorage.setItem('socketId', data.data.socketId);
+        localStorage.setItem('username', data.data.name);
         playerContext.setContext(data.data);
         setInvalidPlayer(false);
         pseudoRef.current.value = '';
