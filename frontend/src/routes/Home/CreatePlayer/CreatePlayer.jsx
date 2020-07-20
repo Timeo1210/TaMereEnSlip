@@ -41,7 +41,6 @@ function CreatePlayer(props) {
         }, 1000);
     };
     const fetchLogin = (username, socketid, newSocketId = socketContext.id) => {
-        console.log('FETCH')
         axios({
             method: 'POST',
             url: `${config.ENDPOINT}/users/login`,

@@ -33,7 +33,6 @@ function Main(props) {
         window.location.replace("/");
     }
     const handleRematch = () => {
-        console.log('REMATCH')
         axios({
             method: 'PUT',
             url: `${config.ENDPOINT}/rooms/${roomContext._id}/rematch`,

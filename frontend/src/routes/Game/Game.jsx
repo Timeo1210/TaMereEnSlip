@@ -44,14 +44,11 @@ function Game(props) {
             }).then((data) => {
                 //users logged
                 localStorage.setItem('socketId', data.data.socketId)
-                console.log(localStorage.getItem('socketId'))
                 playerContext.setContext(data.data);
                 setIsPlayerLogged(true)
             }).catch((error) => {
                 console.log(error.response)
             });
-        } else {
-            console.log("NOT LOGGED")
         }
     }, [playerContext, roomId, socketContext.id]);
 
@@ -60,7 +57,6 @@ function Game(props) {
         if (isPlayerLogged && roomContext._id === null) {
 
             socketContext.on('GET:/room', () => {
-                console.log('GETTING ROOM')
                 axios({
                     method: "GET",
                     url: `${config.ENDPOINT}/rooms/${roomId}`,
@@ -69,23 +65,6 @@ function Game(props) {
                         "socketid": playerContext.socketId 
                     }
                 }).then((data) => {
-                    // should update players
-                    /*
-                    if (roomContext.players !== null && typeof roomContext.players[0] !== 'string') {
-                        console.log('AFTER')
-                        if (roomContext.players.length === data.data.players.length) {
-                            if (roomContext.players.some((elem, index) => elem._id !== data.data.players[index])) {
-                                console.log(roomContext)
-                                console.log(data.data)
-                                console.log("TYRUE")
-                            } else {
-                                console.log(roomContext)
-                                console.log(data.data)
-                                console.log("FALSE")
-                            }
-                        }
-                    }
-                    */
 
                     /* check if player is in the players */
                     if (!data.data.players.includes(playerContext._id)) {
@@ -107,7 +86,6 @@ function Game(props) {
                     "socketid": playerContext.socketId 
                 }
             }).then((data) => {
-                console.log("JOINED")
                 socketContext.emit("/rooms/join", playerContext, roomId);
             }).catch((error) => {
                 console.log(error.response);
