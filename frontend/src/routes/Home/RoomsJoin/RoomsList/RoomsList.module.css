@@ -1,0 +1,117 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 550px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.room__container {
+    --room-primary: #1f1f2b;
+    --room-secondary: #1c1c26;
+    --room-text-color: #d5d2cd;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: var(--primary-bg-color);
+    width: 100%;
+    margin: 0.5rem 0;
+    border-radius: 35px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.room__disabled {
+    filter: grayscale(1);
+    opacity: 0.8;
+    cursor: default;
+}
+
+.container::-webkit-scrollbar {
+    width: 7px;
+}
+
+.container::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+.container::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(0,0,0,0.2);
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.4)
+}
+
+.leftPart {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+}
+
+.room__imageProfil {
+    height: 75px;
+    width: 75px;
+}
+
+.room__imageProfil img {
+    height: 75px;
+    width: 75px;
+}
+
+.room__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.3rem 0;
+}
+
+.room__info__title {
+    font-weight: bold;
+    color: var(--room-text-color);
+}
+
+.room__info__players {
+    transform: translateY(7px);
+}
+
+.room__info__players img {
+    height: 30px;
+    width: 30px;
+}
+
+
+.rightPart {
+    display: flex;
+    flex-direction: row;
+    justify-content: safe;
+    align-items: center;
+}
+
+.rightPart > * {
+    margin-left: 1rem;
+}
+
+.room__isJoinable {
+    background-color: var(--room-primary);
+    padding: 0.6rem;
+    border: 1px solid var(--room-secondary);
+    border-radius: 45%;
+}
+
+.room__playersNumber {
+    margin-right: 1.5rem;
+    padding: 0.7rem;
+    background: var(--room-primary);
+    border: 1px solid var(--room-secondary);
+    border-radius: 10px;
+    color: var(--room-text-color);
+}
+
+.room__playersNumber span {
+    color: white;
+}

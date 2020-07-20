@@ -23,6 +23,10 @@ const playerSchema = new mongoose.Schema({
         required: true,
         enum: ["standard", "iroquoise_hair"],
     },
+    cardsCanBeSetBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Player',
+    },
 });
 
 module.exports = mongoose.model('Player', playerSchema);

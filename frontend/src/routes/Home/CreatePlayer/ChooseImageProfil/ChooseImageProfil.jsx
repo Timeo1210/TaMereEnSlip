@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 import styles from './ChooseImageProfil.module.css';
+import { middlewares } from '../../../../config';
 import { ReactComponent as ChevronLeft } from '../../../../assets/chevron_left.svg';
 import { ReactComponent as ChevronRight } from '../../../../assets/chevron_right.svg';
 import { ReactComponent as Close} from '../../../../assets/close.svg';
 
 function ChooseImageProfil(props) {
-    const playerImagesPath = `${process.env.PUBLIC_URL}/assets/players`;
     const [ imageIndex, setImageIndex ] = useState(0)
     const customStyles = {
         transform: `translateX(${imageIndex * -143}px)`
@@ -35,7 +35,6 @@ function ChooseImageProfil(props) {
         props.handleCreatePlayer(imageIndex)
     }
 
-
     return (
         <div className={styles.container}>
             <div className={styles.closeComponent}>
@@ -54,7 +53,7 @@ function ChooseImageProfil(props) {
                 <div className={styles.imagesContainer}>
                     <div style={customStyles} className={styles.imagesWrapper}>
                     {props.allImages.map((elem, index) => {
-                        return <img className={styles.image} key={index} src={`${playerImagesPath}/${elem}.png`} alt={`${elem}`} />
+                        return <img className={styles.image} key={index} src={middlewares.getImageProfil(elem)} alt={`${elem}`} />
                     })}
                     </div>
                 </div>

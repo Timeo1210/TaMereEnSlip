@@ -41,6 +41,12 @@
     color: inherit;
 }
 
+.logout {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
 .title {
     padding: 1rem 0;
     font-size: 1.2rem;

@@ -1,0 +1,149 @@
+.container {
+    background: rgba(27, 27, 39, 0.8);
+    padding: 1rem;
+    border: 2px solid rgba(27, 27, 39, 0.85);
+    border-radius: 15px;
+    width: fit-content;
+    max-width: 80vw;
+    transition: transform ease 1s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.timerBar {
+    width: 80%;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.playersList {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-width: 80vw;
+    max-height: 65vh;
+}
+
+.playersList::-webkit-scrollbar {
+    width: 7px;
+}
+
+.playersList::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+.playersList::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(0,0,0,0.2);
+}
+
+.playersList::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.4)
+}
+
+.playersList > * {
+    margin-bottom: 1rem;
+}
+
+.playersList > *:not(:last-child) {
+    margin-right: 2.5rem;
+}
+
+.playersList__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.playersList__item__name {
+    color: #FFF;
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.playersList__item__cards {
+    display: flex;
+    flex-direction: row;
+}
+
+.playersList__item__cards > *:first-child {
+    margin-right: 1rem;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFF;
+    color: var(--card-text-color);
+    width: 150px;
+    height: 150px;
+    position: relative;
+    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 
+                0px 2px 2px 0px rgba(0,0,0,0.14), 
+                0px 1px 5px 0px rgba(0,0,0,0.12);
+}
+
+.card__people {
+    border: 10px solid var(--card-player-color);
+}
+
+.card__object {
+    border: 10px solid var(--card-object-color);
+}
+
+.card__content {
+    font-weight: bold;
+    color: var(--card-text-color);
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0 0.1rem;
+}
+
+.header {
+    margin: 0rem 0 1rem;
+    height: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 3px;
+    box-sizing: border-box;
+    padding: 0;
+    padding-top: 2px;
+}
+
+.header__bar {
+    height: 1px;
+    min-width: 10px;
+    width: 100%;
+    background-color: #7b7b7b;
+}
+
+.header__text {
+    display: inline-block;
+    max-width: 85%;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-align: center;
+    min-width: fit-content;
+    margin: 0 0.3rem;
+    color: #7b7b7b;
+    transform: translateY(-1px);
+}
+
+.footerActions {
+    margin-top: 3rem;
+}
+
+.footerActions > *:not(:last-child) {
+    margin-right: 1rem;
+}

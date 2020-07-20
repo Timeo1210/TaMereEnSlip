@@ -1,6 +1,6 @@
 import React from 'react';
 import socketIOClient from 'socket.io-client';
-import { config } from '../../../config';
+import { config } from '../../config';
 const ENDPOINT = config.ENDPOINT;
 
 export const SocketContext = React.createContext('null');

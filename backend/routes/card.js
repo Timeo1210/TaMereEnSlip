@@ -14,6 +14,13 @@ router.get('/', async (req, res) => {
     });
 });
 
+router.get('/:id', async (req, res) => {
+    const cardId = req.params.id;
+    const card = await Card.findById(cardId);
+    if (card === null) return res.sendStatus(401);
+    res.status(200).json(card);
+})
+
 router.post('/', async (req, res) => {
     const card = new Card({
         type: req.body.type,

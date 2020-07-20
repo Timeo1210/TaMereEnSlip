@@ -1,8 +1,8 @@
 import React, { useRef, useContext, useState } from 'react';
 
 import styles from './CreatePlayer.module.css';
-import { SocketContext } from '../Contexts/SocketContext';
-import { PlayerContext } from '../Contexts/PlayerContext';
+import { SocketContext } from '../../Contexts/SocketContext';
+import { PlayerContext } from '../../Contexts/PlayerContext';
 import { config } from '../../../config';
 import Warning from '../../../assets/warning.svg';
 import axios from 'axios';
@@ -26,8 +26,10 @@ function CreatePlayer(props) {
         "iroquoise_hair",
     ];
 
+    const handleIsPlayerLogged = props.handleIsPlayerLogged;
     const userIsLogged = (data) => {
         localStorage.setItem('socketId', data.data.socketId);
+        localStorage.setItem('username', data.data.name);
         playerContext.setContext(data.data);
         setInvalidPlayer(false);
         pseudoRef.current.value = '';
@@ -35,19 +37,20 @@ function CreatePlayer(props) {
         buttonSubmitRef.current.disabled = true;
         containerRef.current.setAttribute('style', 'transform: scaleY(0)');
         setTimeout(() => {
-            props.handleIsPlayerLogged();
+            handleIsPlayerLogged();
         }, 1000);
-    }
-    const handleSubmit = () => {
+    };
+    const fetchLogin = (username, socketid, newSocketId = socketContext.id) => {
+        console.log('FETCH')
         axios({
             method: 'POST',
             url: `${config.ENDPOINT}/users/login`,
             headers: {
-                "username": pseudoRef.current.value,
-                "socketid": localStorage.getItem('socketId') || null
+                "username": username,
+                "socketid": socketid || null
             },
             params: {
-                newSocketId: socketContext.id,
+                newSocketId: newSocketId,
             }
         }).then((data) => {
             //users logged
@@ -58,6 +61,9 @@ function CreatePlayer(props) {
                 setInvalidPlayer(true);
             }
         });
+    }
+    const handleSubmit = () => {
+        fetchLogin(pseudoRef.current.value, localStorage.getItem('socketId') || null)
     }
     const handleCreatePlayer = (imageIndex) => {
         const imageProfil = allImages[imageIndex];

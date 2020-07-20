@@ -1,0 +1,35 @@
+.container {
+    background: rgba(27, 27, 39, 0.8);
+    padding: 2rem;
+    border: 2px solid rgba(27, 27, 39, 0.85);
+    border-radius: 15px;
+    width: fit-content;
+    max-width: 80vw;
+    transition: transform ease 1s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container > p {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.playersContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.PlayerDiv__container {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+}
+
+.PlayerDiv__container p {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+}

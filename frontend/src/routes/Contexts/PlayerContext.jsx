@@ -14,8 +14,9 @@ export class PlayerProvider extends React.Component {
             socketId: null,
             __v: null,
             turn: 0,
+            imageProfil: null,
+            cardsCanBeSetBy: null,
             setContext: (value) => {
-                console.log(value)
                 this.setState(value)
             }
         }

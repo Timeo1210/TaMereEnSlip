@@ -26,5 +26,7 @@ module.exports = {
         "no-underscore-dangle": "off",
         "consistent-return": "off",
         "max-len": "off",
+        "no-plusplus": "off",
+        "no-await-in-loop": "off",
     },
 };
