@@ -12,6 +12,7 @@ import { RoomContext } from '../Contexts/RoomContext';
 import PlayerWaitingList from './PlayerWaitingList';
 import AdminTools from './AdminTools';
 import ChooseCustomCards from './ChooseCustomCards';
+import Main from './Main';
 
 function Game(props) {
     
@@ -43,6 +44,7 @@ function Game(props) {
             }).then((data) => {
                 //users logged
                 localStorage.setItem('socketId', data.data.socketId)
+                console.log(localStorage.getItem('socketId'))
                 playerContext.setContext(data.data);
                 setIsPlayerLogged(true)
             }).catch((error) => {
@@ -112,7 +114,7 @@ function Game(props) {
             });
             
         }
-    }, [isPlayerLogged, playerContext, roomId, socketContext, roomContext]);
+    }, [isPlayerLogged, playerContext, roomId, socketContext, roomContext, props.history]);
 
     if (isPlayerLogged) {
         //if game wait for chosing card
@@ -120,6 +122,13 @@ function Game(props) {
             return (
                 <div className={styles.container}>
                     <ChooseCustomCards />
+                </div>
+            )
+        } else if (!roomContext.isJoinable && roomContext.isGameHasStart) {
+            //if game has started
+            return (
+                <div className={styles.container}>
+                    <Main />
                 </div>
             )
         } else {
@@ -141,14 +150,5 @@ function Game(props) {
 }
 // eslint-disable-next-line
 Game = withRouter(Game);
-
-function PreRender(props) {
-    return (
-        <div className={styles.container}>
-            {props.children}
-            <AdminTools />
-        </div>
-    )
-}
 
 export default Game;

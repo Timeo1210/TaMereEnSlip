@@ -6,12 +6,15 @@ import styles from './RoomsJoin.module.css';
 import { PlayerContext } from '../../Contexts/PlayerContext';
 import { config } from '../../../config';
 import RoomsList from './RoomsList';
-import { ReactComponent as CreateGame } from '../../../assets/create_game.svg';
+import { ReactComponent as CreateGameSVG } from '../../../assets/create_game.svg';
+import CreateGame from './CreateGame';
 
 function RoomsJoin(props) {
 
     const playerContext = useContext(PlayerContext);
+    
     const [ rooms, setRooms ] = useState([])
+    const [ isDialogOpen, setIsDialogOpen ] = useState(false);
 
     const getRoomsRequest = () => {
         axios({
@@ -34,6 +37,7 @@ function RoomsJoin(props) {
     }
     const handleRoomJoin = (roomId) => {
         console.log("JOIN: " + roomId);
+        console.log(playerContext._id)
         if (playerContext._id === null) return;
 
         props.history.push(`/play?roomId=${roomId}`);
@@ -44,6 +48,9 @@ function RoomsJoin(props) {
         if (rooms.length > 0 && rooms[0].isPrivate === false && rooms[0].isJoinable) {
             handleRoomJoin(rooms[0]._id);
         }
+    }
+    const handleCreateGameButton = () => {
+        setIsDialogOpen(!isDialogOpen);
     }
 
     //componentdidmount and componentwillunmount
@@ -59,9 +66,9 @@ function RoomsJoin(props) {
         <div className={styles.container}>
             <div className={styles.playInterface}>
                 <button onClick={handlePlayClick} className={styles.playInterface__play}>Jouer</button>
-                <div className={styles.playInterface__create}>
+                <div onClick={handleCreateGameButton} className={styles.playInterface__create}>
                     <div className={styles.playInterface__create__button}>
-                        <CreateGame />
+                        <CreateGameSVG />
                         <span className={styles.playInterface__create__text}>Créer</span>
                     </div>
                 </div>
@@ -72,6 +79,8 @@ function RoomsJoin(props) {
                 <div className={styles.header__bar}></div>
             </div>
             <RoomsList rooms={rooms} handleRoomJoin={handleRoomJoin} />
+            <CreateGame isOpen={isDialogOpen} handleIsOpen={handleCreateGameButton} handleRoomJoin={handleRoomJoin} />
+            {playerContext._id === null && <div className={styles.disabled}></div>}
         </div>
     )
 }

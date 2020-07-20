@@ -5,6 +5,11 @@ import TwitterLogo from '../../assets/twitter.svg';
 import GithubLogo from '../../assets/github.svg';
 
 class Header extends React.Component {
+    
+    handleLogOut() {
+        localStorage.clear();
+        window.location.replace("/");
+    }
 
     render() {
         return (
@@ -21,6 +26,9 @@ class Header extends React.Component {
                         <a href="https://github.com/Timeo1210" className={styles.socialLink}>
                             <img src={GithubLogo} alt=""/>
                         </a>
+                    </div>
+                    <div onClick={this.handleLogOut} className={styles.logout}>
+                        <span>Se Déconnecter</span>
                     </div>
                 </section>
                 <div className={styles.title}>

@@ -61,6 +61,14 @@ function AdminTools() {
             })
         }
     }
+    const handleTimerStartTime = (event) => {
+        const value = parseInt(event.target.value);
+        if (value >= 10) {
+            doPatchRequest({
+                timerStartTime: value
+            });
+        }
+    }
     const handleIsPrivate = (event) => {
         const checked = event.target.checked;
         doPatchRequest({
@@ -159,6 +167,17 @@ function AdminTools() {
                             }
                             labelPlacement="start"
                             label="Nombre de joueurs maximum :"
+                        />
+                    </div>
+                    <div className={styles.tools__timerStartTime}>
+                        <FormControlLabel
+                            onChange={handleTimerStartTime}
+                            value={roomContext.timerStartTime} 
+                            control={
+                                <Input className={styles.tools__timerStartTime__input} type="number" color="secondary" />
+                            }
+                            labelPlacement="start"
+                            label="Temps par tour (s) :"
                         />
                     </div>
                     <div className={styles.tools__isPrivate}>

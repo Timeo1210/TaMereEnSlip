@@ -19,6 +19,7 @@ export class RoomProvider extends React.Component {
             players: null,
             roomImageProfil: null,
             turn: null,
+            cardsCanBeSetBy: null,
             _id: null,
             __b: null,
             setContext: (value) => {

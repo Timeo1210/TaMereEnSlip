@@ -20,6 +20,18 @@ function ioMiddleware(io) {
             }
         });
 
+        socket.on('TOROOM::TIMER:RESUME', (data) => {
+            const socketRooms = Object.keys(socket.rooms);
+            const socketRoom = socketRooms.filter((elem) => elem !== socket.id)[0];
+            io.in(socketRoom).emit('TIMER:RESUME', data);
+        })
+
+        socket.on('TOROOM::TIMER:PAUSE', (data) => {
+            const socketRooms = Object.keys(socket.rooms);
+            const socketRoom = socketRooms.filter((elem) => elem !== socket.id)[0];
+            io.in(socketRoom).emit('TIMER:PAUSE', data);
+        })
+
         socket.on('disconnecting', async () => {
             const socketRooms = Object.keys(socket.rooms);
             const socketRoom = socketRooms.filter((elem) => elem !== socket.id)[0];

@@ -37,6 +37,10 @@ const roomSchema = new mongoose.Schema({
         type: Number,
         default: 4,
     },
+    timerStartTime: {
+        type: Number,
+        default: 30
+    },
     isPrivate: {
         type: Boolean,
         default: false,
@@ -45,6 +49,14 @@ const roomSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    cardsCanBeSetBy: [
+        [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Player',
+            }
+        ]
+    ],
 }, {
     toObject: {
         virtuals: true,

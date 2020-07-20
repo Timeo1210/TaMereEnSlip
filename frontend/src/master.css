@@ -1,6 +1,9 @@
 :root {
     --secondary-bg-color: #1e1e2a;
     --primary-bg-color: #242433;
+    --card-object-color: #ff9392;
+    --card-player-color: #93acff;
+    --card-text-color: #575757;
 }
 
 body {

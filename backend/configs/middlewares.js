@@ -1,5 +1,6 @@
 const Player = require('../models/Player');
 const Room = require('../models/Room');
+const Card = require('../models/Card');
 
 const setHeaders = (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -66,6 +67,16 @@ const leavePlayerFromRoom = async (player, room) => {
     if (playerIndex === -1) return false;
     room.players.splice(playerIndex, 1);
     await room.save();
+    if (player.cards.length > 0) {
+        await Promise.all(player.cards.map(async (elem) => {
+            const card = await Card.findById(elem);
+            if (card.isCustom) {
+                await card.remove()
+            }
+        }));
+        player.cards = []
+        await player.save();
+    }
     return true;
 };
 

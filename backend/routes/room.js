@@ -39,8 +39,14 @@ router.get('/:id', customMiddlewares.authPlayer, async (req, res) => {
 
 router.post('/', customMiddlewares.authPlayer, async (req, res) => {
     // set max_pplayer
+    const {
+        name,
+        imageProfil
+    } = req.query;
+    if (name === undefined) return res.sendStatus(400);
     const room = new Room({
         name: req.query.name,
+        imageProfil: imageProfil || 'standard'
     });
     try {
         const newRoom = await room.save();
@@ -51,15 +57,6 @@ router.post('/', customMiddlewares.authPlayer, async (req, res) => {
     } catch (e) {
         res.sendStatus(500);
     }
-});
-
-router.post('/test', async (req, res) => {
-    const player = new Player({
-        name: req.query.name,
-        socketId: req.query.socketId,
-    });
-    await player.save();
-    res.sendStatus(200);
 });
 
 router.put('/:id/join', customMiddlewares.authPlayer, async (req, res) => {
@@ -118,24 +115,28 @@ router.put('/:id/kick/users/:userId', customMiddlewares.authAdminPlayer, async (
 
 router.put('/:id/start', customMiddlewares.authAdminPlayer, async (req, res) => {
     try {
-        console.log(req.room);
-        if (!req.room.isGameHasStart
+        if ( 1 + 1 === 2
+        //    !req.room.isGameHasStart
         //  && req.room.players.length > 1
             && 1 + 1 === 2
         ) {
             req.room.isJoinable = false;
             await req.room.save();
             if (req.room.isCustomCard) {
-                await req.room.players.forEach(async (elem, index) => {
+                var cardsCanBeSetBy = [] // 0 choose for 1
+                await Promise.all(req.room.players.map(async (elem, index) => {
                     const player = await Player.findById(elem);
                     const nextIndex = index + 1 >= req.room.players.length ? 0 : index + 1;
-                    player.cardsCanBeSetBy = await Player.findById(req.room.players[nextIndex]);
+                    const nextPlayer = await Player.findById(req.room.players[nextIndex])
+                    player.cardsCanBeSetBy = nextPlayer;
                     await player.save();
-                    console.log(player);
-                });
-            } else {
-                console.log("WTF");
+                    cardsCanBeSetBy = await [...cardsCanBeSetBy, [nextPlayer, player]]
+                }));
+                req.room.cardsCanBeSetBy = cardsCanBeSetBy;
+                await req.room.save();
             }
+            req.socketio.in(`${req.room.id}`).emit('GET:/room');
+            res.sendStatus(200);
         } else {
             res.sendStatus(401);
         }
@@ -143,6 +144,13 @@ router.put('/:id/start', customMiddlewares.authAdminPlayer, async (req, res) => 
         console.log(e);
         res.sendStatus(500);
     }
+});
+
+router.put('/:id/rematch', middlewares.authAdminPlayer, async (req, res) => {
+    req.room.isJoinable = true;
+    req.room.isGameHasStart = false;
+    await req.room.save();
+    req.socketio.in(req.room.id).emit('GET:/room');
 });
 
 router.delete('/:id', customMiddlewares.authPlayer, async (req, res) => {
@@ -174,5 +182,11 @@ router.patch('/:id', middlewares.authAdminPlayer, async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+router.post('/test', customMiddlewares.authPlayer, async (req, res) => {
+    const roomId = "5f10b795aa85c10f500f894e";
+    req.socketio.in(roomId).emit('TIMER:RESUME', 25)
+    res.sendStatus(200)
+})
 
 module.exports = router;

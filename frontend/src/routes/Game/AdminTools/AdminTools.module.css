@@ -58,7 +58,7 @@
     overflow-x: hidden;
     box-sizing: content-box;
     height: fit-content;
-    max-height: 100px;
+    max-height: 200px;
 }
 
 .tools__container svg {
@@ -101,6 +101,12 @@
 }
 
 .tools__maxPlayer__input {
+    margin-left: 1.5rem;
+    margin-right: 1rem;
+    color: #FFF !important; 
+}
+
+.tools__timerStartTime__input {
     margin-left: 1.5rem;
     margin-right: 1rem;
     color: #FFF !important; 
