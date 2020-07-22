@@ -1,4 +1,4 @@
-# Ta Mere En Lip
+# Ta Mere En Slip
 
 Projets Open-Source du site [Ta Mere En Slip](http://tamereenslip.cf)
 
