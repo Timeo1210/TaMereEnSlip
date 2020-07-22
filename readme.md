@@ -160,7 +160,7 @@ and remove theses line in app.js
 
 This Backup project use some environment variables
 For Development save theses in */backend/.env*
-There is no production indication because this method is temporary
+This is temporary
 
 ##### Here is the variables :
 
@@ -172,18 +172,36 @@ PORT=[port_of_backup_server] // 4998
 **PASSWORD** : Is your mongodb database url
 **PORT**: Is your backup server port that will exposed
 
-### 2. Installation
+### 2. Development Installation
 
-Use this commands to install the backup server:
+Use this command to install the develop backup server:
 
 ```
 npm install
 ```
 
-### 3. Run
-Here is the commande to run the backup server:
+### 3. Production Installation
+
+Use theses commands to install the prod backup server 
+
+```
+// in /backend folder
+docker build .
+docker tag [imageID] backup-server:[project_version]
+```
+*You can save the image and export to your prod server and load after the image*
+*Most importante thing is to have the tag attributs for the docker-compose.yml file*
+
+### 4. Development Run
+Here is the commande to run the develop backup server:
 ```
 npm start
+```
+
+### 5. Production Run
+Here is the commande to run the prod backup server:
+```
+docker run backup-server
 ```
 
 # Frontend
