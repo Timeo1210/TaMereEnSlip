@@ -10,7 +10,6 @@ async function authPlayer(playerInfo) {
 
 function ioMiddleware(io) {
     io.on('connection', (socket) => {
-        console.log('NEW Client');
 
         socket.on('/rooms/join', async (playerInfo, roomId) => {
             const player = await authPlayer(playerInfo);
@@ -46,12 +45,10 @@ function ioMiddleware(io) {
                     else io.in(`${socketRoom}`).emit('GET:/room');
                 }
             }
-            // const room = await Room.findById(socketRooms[0]);
-            // console.log(room)
         });
 
         socket.on('disconnect', async () => {
-            console.log('DISCONNECT from Client');
+            
         });
     });
 }

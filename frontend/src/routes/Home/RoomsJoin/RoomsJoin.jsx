@@ -36,8 +36,6 @@ function RoomsJoin(props) {
         });
     }
     const handleRoomJoin = (roomId) => {
-        console.log("JOIN: " + roomId);
-        console.log(playerContext._id)
         if (playerContext._id === null) return;
 
         props.history.push(`/play?roomId=${roomId}`);

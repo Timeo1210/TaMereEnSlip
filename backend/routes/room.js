@@ -7,7 +7,6 @@ const Room = require('../models/Room');
 const middlewares = require('../configs/middlewares');
 
 router.get('/', async (req, res) => {
-    // console.log(req.headers);
     const rooms = (await Room.find().lean()).sort((a, b) => {
         const nA = a.isJoinable === true ? -1 : 1;
         const nB = b.isJoinable === true ? -1 : 1;
@@ -38,7 +37,6 @@ router.get('/:id', customMiddlewares.authPlayer, async (req, res) => {
 });
 
 router.post('/', customMiddlewares.authPlayer, async (req, res) => {
-    // set max_pplayer
     const {
         name,
         imageProfil
@@ -68,9 +66,10 @@ router.put('/:id/join', customMiddlewares.authPlayer, async (req, res) => {
         if (room.players.length === 0) {
             if (!room.admins.includes(player._id)) room.admins.push(player);
         }
-        if (room.players.includes(player._id)
-        || room.players.length + 1 > room.maxPlayer
-        // || !room.isJoinable)
+        if (
+            room.players.includes(player._id)
+            || room.players.length + 1 > room.maxPlayer
+            || !room.isJoinable
         ) return res.sendStatus(201);
         room.players.push(player);
         await room.save();
@@ -115,10 +114,9 @@ router.put('/:id/kick/users/:userId', customMiddlewares.authAdminPlayer, async (
 
 router.put('/:id/start', customMiddlewares.authAdminPlayer, async (req, res) => {
     try {
-        if ( 1 + 1 === 2
-        //    !req.room.isGameHasStart
-        //  && req.room.players.length > 1
-            && 1 + 1 === 2
+        if ( 
+            !req.room.isGameHasStart
+            && req.room.players.length > 1
         ) {
             req.room.isJoinable = false;
             await req.room.save();

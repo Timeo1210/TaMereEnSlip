@@ -32,7 +32,9 @@ class Header extends React.Component {
                     </div>
                 </section>
                 <div className={styles.title}>
-                    <h1>Ta Mère En Slip</h1>
+                    <a href="/">
+                        <h1>Ta Mère En Slip</h1>
+                    </a>
                 </div>
             </div>
         )

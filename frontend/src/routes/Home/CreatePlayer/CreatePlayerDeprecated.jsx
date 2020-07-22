@@ -15,17 +15,6 @@ class CreatePlayer extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        console.log(localStorage)
-    }
-
-    componentDidUpdate() {
-        if (this.context) {
-            console.log(this.context.id)
-            //localStorage.setItem('socketId', this.context.id);
-        }
-    }
-
     handleSubmit() {
         axios({
             method: 'POST',

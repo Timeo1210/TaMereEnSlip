@@ -83,7 +83,6 @@ function AdminTools() {
                 admins: roomContext.admins
             });
         }
-        console.log(value)
     }
     const handleKickPlayer = (event) => {
         const value = event.target.value;
