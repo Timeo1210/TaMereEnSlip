@@ -1,0 +1,111 @@
+
+.container {
+    background: rgba(27, 27, 39, 0.8);
+    padding: 1rem;
+    padding-top: 0.5rem;
+    border: 2px solid rgba(27, 27, 39, 0.85);
+    border-radius: 15px;
+    width: 80vw;
+    max-width: 402px;
+    transition: transform ease 1s;
+    position: relative;
+    margin-top: 2rem;
+}
+
+.header {
+    position: relative;
+    margin: 1rem 0;
+    height: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__bar {
+    height: 1px;
+    width: 100%;
+    background-color: #7b7b7b;
+}
+
+.header__text {
+    display: inline-block;
+    min-width: 175px;
+    max-width: 85%;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-align: center;
+    color: rgba(255,255,255,0.43);
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    height: 66px;
+    width: 100%;
+}
+
+.inputGroup__input {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    font-size: 15px;
+    letter-spacing: 1.4px;
+    padding: 15px;
+    color: #505050;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+}
+
+.inputGroup__input::placeholder {
+    color: #bababa;
+}
+
+.loginSubmit {
+    margin: 38px 0 10px;
+}
+
+.loginSubmit__input {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 100px;
+    color: white;
+    background: #491c70;
+    transition: background ease 0.5s;
+    cursor: pointer;
+    font-size: 100%;
+    font-weight: 600;
+}
+.loginSubmit__input:disabled {
+    background: #505050;
+}
+
+.createPlayerButton {
+    width: 200px;
+    height: 30px;
+    margin-top: 10px;
+    border: 1px solid white;
+    color: white;
+    background: #af3d3d;
+    transition: background ease 0.5s;
+    cursor: pointer;
+    font-size: 100%;
+    outline: none;
+    box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.58);
+}
+
+.createPlayerButton:active {
+    box-shadow: none;
+}
+
+.imageProfilContainer {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background: rgba(27, 27, 39, 1);
+    z-index: 2;
+}

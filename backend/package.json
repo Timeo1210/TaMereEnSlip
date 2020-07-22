@@ -1,0 +1,34 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend of TaMereEnSlip",
+  "scripts": {
+    "start": "node app",
+    "devStart": "nodemon app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Timeo1210/TaMereEnSlip.git"
+  },
+  "author": "Boulhol Timeo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Timeo1210/TaMereEnSlip/issues"
+  },
+  "homepage": "https://github.com/Timeo1210/TaMereEnSlip#readme",
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-node": "^4.1.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-node": "^11.1.0",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.20",
+    "socket.io": "^2.3.0"
+  }
+}

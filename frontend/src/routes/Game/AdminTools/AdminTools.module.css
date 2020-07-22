@@ -1,0 +1,136 @@
+.container {
+    background: rgba(27, 27, 39, 0.8);
+    padding: 1rem;
+    border: 2px solid rgba(27, 27, 39, 0.85);
+    border-radius: 15px;
+    width: fit-content;
+    max-width: 80vw;
+    transition: transform ease 1s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 10px;
+}
+
+.header {
+    position: relative;
+    margin: 0rem 0 1rem;
+    height: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.5rem;
+}
+
+.header__bar {
+    height: 1px;
+    min-width: 50px;
+    width: 100%;
+    background-color: #7b7b7b;
+}
+
+@media screen and (max-width: 400px) {
+    .header__bar {
+        display: none;
+    }
+}
+
+.header__text {
+    display: inline-block;
+    min-width: 175px;
+    max-width: 85%;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-align: center;
+    color: rgba(255,255,255,0.43);
+    margin: 0 0.8rem;
+}
+
+.tools__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-sizing: content-box;
+    height: fit-content;
+    max-height: 200px;
+}
+
+.tools__container svg {
+    color: #e3e1de;
+}
+
+.tools__container::-webkit-scrollbar {
+    width: 7px;
+}
+
+.tools__container::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+.tools__container::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(0,0,0,0.25);
+}
+
+.tools__container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.4)
+}
+
+.tools__disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.tools__disabled * {
+    cursor: default;
+}
+
+.tools__surface {
+    width: 110%;
+    height: 110%;
+    position: absolute;
+    z-index: 10;
+    top: 0;
+}
+
+.tools__maxPlayer__input {
+    margin-left: 1.5rem;
+    margin-right: 1rem;
+    color: #FFF !important; 
+}
+
+.tools__timerStartTime__input {
+    margin-left: 1.5rem;
+    margin-right: 1rem;
+    color: #FFF !important; 
+}
+
+.tools__name__input {
+    margin-left: 1.5rem !important;
+    margin-right: 1rem !important;
+}
+
+.tools__name__input input, label {
+    color: #FFF !important; 
+}
+
+.tools__setAdmin__select {
+    margin-left: 1.5rem !important;
+    margin-right: 1rem !important;
+}
+
+.tools__kickPlayer__select {
+    margin-left: 1.5rem !important;
+    margin-right: 1rem !important;
+}
+
+.tools__startGame {
+    margin: 1rem 0;
+}

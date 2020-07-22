@@ -1,0 +1,21 @@
+version: "3"
+services: 
+    app:
+        container_name: app
+        restart: always
+        image: app:0.1.0
+        env_file: 
+            - production.env
+        ports: 
+            - "4999:4999"
+        links: 
+            - mongo
+    mongo:
+        container_name: mongo
+        image: mongo
+        volumes: 
+            - ./data:/data/db
+        expose: 
+            - 27017
+        ports: 
+            - "27017:27017"

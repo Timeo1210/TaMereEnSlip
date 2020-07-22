@@ -1,0 +1,121 @@
+.container {
+    position: absolute;
+    top: 2.5%;
+    left: 2.5%;
+    width: 95%;
+    height: 95%;
+    background: rgba(27, 27, 39, 1);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid rgba(20, 20, 32, 0.85);
+    border-radius: 15px;
+}
+
+.carousel {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.image {
+    width: 143px;
+    height: 143px;
+}
+
+.imagesContainer {
+    width: 143px;
+    height: 143px;
+    overflow: hidden;
+    background: whitesmoke;
+    border: 3px solid rgba(27, 27, 39, 0.85);
+}
+
+.imagesWrapper {
+    display: flex;
+    align-items: center;
+    transition: transform ease-in-out 0.5s;
+}
+
+.chevron {
+    height: 35px;
+    width: 35px;
+    fill: #491c70;
+    cursor: pointer;
+}
+
+.imageProfilSubmit {
+    width: 60%;
+}
+
+.imageProfilSubmit__button {
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 100px;
+    color: white;
+    background: #491c70;
+    transition: background ease 0.5s;
+    cursor: pointer;
+    font-size: 100%;
+    font-weight: 600;
+}
+.imageProfilSubmit__button:active {
+    box-shadow: none;
+}
+
+.closeComponent {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeComponent__button {
+    width: 40%;
+    height: 30px;
+    border: 1px solid white;
+    color: white;
+    background: #af3d3d;
+    transition: background ease 0.5s;
+    cursor: pointer;
+    font-size: 100%;
+    outline: none;
+    box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.58);
+}
+
+.closeComponent__close {
+    width: 10px;
+    height: 10px;
+    fill: white;
+    margin-right: 3%;
+}
+
+.header {
+    position: relative;
+    height: 10px;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__bar {
+    height: 1px;
+    width: 100%;
+    background-color: #7b7b7b;
+}
+
+.header__text {
+    display: inline-block;
+    min-width: 200px;
+    max-width: 85%;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-align: center;
+    color: rgba(255,255,255,0.43);
+}
