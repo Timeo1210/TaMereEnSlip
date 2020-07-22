@@ -9,6 +9,7 @@ const socketIo = require('socket.io');
 
 const customMiddlewares = require('./configs/middlewares');
 const ioMiddleware = require('./socketIO');
+const initServer = require('./configs/init');
 
 const rootRouter = require('./routes/root');
 const cardRouter = require('./routes/card');
@@ -43,3 +44,4 @@ app.use('/rooms', roomRouter);
 app.use('/users', usersRouter);
 
 server.listen(process.env.PORT || 4000);
+initServer()
