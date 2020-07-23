@@ -1,0 +1,10 @@
+version: "3"
+services: 
+    backup-server:
+        container_name: backup-server
+        restart: always
+        image: backup-server:latest
+        env_file: 
+            - production.env
+        ports: 
+            - "4998:4998"

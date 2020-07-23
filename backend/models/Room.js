@@ -9,7 +9,7 @@ const roomSchema = new mongoose.Schema({
     roomImageProfil: {
         type: String,
         default: "standard",
-        enum: ["standard", "iroquoise_hair"],
+        enum: ["standard", "iroquoise_hair", "african_women", "blondish_women", "chignon_glasses", "chignon_women", "hat_man", "hood_man", "mexican_beard_man", "redhead_man", "smoking_pipe_man"],
     },
     turn: {
         type: Number,

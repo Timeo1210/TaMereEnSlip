@@ -49,19 +49,90 @@ npm install
 ### 3. Production Installation
 
 **docker and docker-compose need to installed on your prod server**
+**There are 2 method, one with ressources restrictions and the other without**
 
 ##### You first need to build image of the project:
 ```
 // in /backend folder
-docker build .
-docker tag [imageID] app:[project_version]
+docker build -tag app:[project_version] . 
 ```
 *You can save the image and export to your prod server and load after the image*
 *Most importante thing is to have the tag attributs for the docker-compose.yml file*
 
-##### Then edit docker-compose.yml file :
+#### In case your use some restrictions you can edit docker-compose-default.yml file :
 
-This is an example of the docker-compose.yml file content:
+This is an example of the docker-compose-swarm.yml file content:
+```
+version: "3"
+services: 
+    app:
+        image: app:0.1.0
+        env_file: 
+            - production.env
+        ports: 
+            - "4999:4999"
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.03'
+                    memory: 400m
+                reservations:
+                    cpus: '0.01'
+                    memory: 100m
+    mongo:
+        image: mongo
+        volumes: 
+            - ./data:/data/db
+        ports: 
+            - "27017:27017"
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.05'
+                    memory: 500m
+                reservations:
+                    cpus: '0.01'
+                    memory: 100m
+```
+
+You can make some change to make it work for you
+Here it is :
+```
+version: "3"
+services: 
+    app:
+        image: [BackendImageName]:[BackendImageVersion]
+        env_file: 
+            - [EnvironmentFile]
+        ports: 
+            - "[PORT]:[PORT]"
+        deploy:
+            resources:
+                limits:
+                    cpus: '[MaxCpuUtilisationInDecimal]'
+                    memory: [MaxMemoryUsageInMegabyte]m
+                reservations:
+                    cpus: '[ReservationCpuUtilisationInDecimal]'
+                    memory: [ReservationMemoryUsageInMegabyte]m
+    mongo:
+        image: mongo
+        volumes: 
+            - ./data:/data/db
+        ports: 
+            - "27017:27017"
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.05'
+                    memory: 500m
+                reservations:
+                    cpus: '0.01'
+                    memory: 100m
+```
+
+##### In case you don't use some restrictions you can edit docker-compose-default.yml file :
+
+This is an example of the docker-compose-default.yml file content:
 ```
 version: "3"
 services: 
@@ -121,17 +192,30 @@ npm run devStart
 
 ### 5. Production run
 
-Launch you app with launch.sh:
+You can launch your app with */backend/launch.sh* but this will make some memory and cpu limitations
+
+Or you can launch your app with */backend/launch_default.sh* and this will not make some restrictions
 
 Here is an example of launch.sh structure :
+```
+#!/bin/bash
+sudo /usr/bin/docker swarm init
+sudo /usr/bin/docker stack deploy -c /home/ubuntu/docker-compose-swarm.yml app
+```
+
+This file is make for my aws ec2 server but here is the change you can make
+```
+sudo [PathToDockerComposeScript] swarm init
+sudo [PathToDockerComposeScript] stack deploy -c [PathToDockerComposeFile] app
+```
+
+Here is an example of launch_default.sh structure :
 ```
 #!/bin/bash
 sudo /usr/bin/docker-compose -f /home/ubuntu/docker-compose.yml up
 ```
 
-This file is make for aws ec2 server
-
-Here is the change you can make :
+This file is make for my aws ec2 server but here is the change you can make :
 ```
 #!/bin/bash
 sudo [PathToDockerComposeScript] -f [PathToDockerComposeFile] up
@@ -160,7 +244,7 @@ and remove theses line in app.js
 
 This Backup project use some environment variables
 For Development save theses in */backend/.env*
-There is no production indication because this method is temporary
+This is temporary
 
 ##### Here is the variables :
 
@@ -172,18 +256,36 @@ PORT=[port_of_backup_server] // 4998
 **PASSWORD** : Is your mongodb database url
 **PORT**: Is your backup server port that will exposed
 
-### 2. Installation
+### 2. Development Installation
 
-Use this commands to install the backup server:
+Use this command to install the develop backup server:
 
 ```
 npm install
 ```
 
-### 3. Run
-Here is the commande to run the backup server:
+### 3. Production Installation
+
+Use theses commands to install the prod backup server 
+
+```
+// in /backend folder
+docker build .
+docker tag [imageID] backup-server:[project_version]
+```
+*You can save the image and export to your prod server and load after the image*
+*Most importante thing is to have the tag attributs for the docker-compose.yml file*
+
+### 4. Development Run
+Here is the commande to run the develop backup server:
 ```
 npm start
+```
+
+### 5. Production Run
+Here is the commande to run the prod backup server:
+```
+docker run backup-server
 ```
 
 # Frontend

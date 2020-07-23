@@ -22,8 +22,17 @@ function CreatePlayer(props) {
     const playerContext = useContext(PlayerContext);
 
     const allImages = [
-        "standard",
-        "iroquoise_hair",
+        "standard", 
+        "iroquoise_hair", 
+        "african_women", 
+        "blondish_women", 
+        "chignon_glasses", 
+        "chignon_women", 
+        "hat_man", 
+        "hood_man", 
+        "mexican_beard_man", 
+        "redhead_man", 
+        "smoking_pipe_man"
     ];
 
     const handleIsPlayerLogged = props.handleIsPlayerLogged;
