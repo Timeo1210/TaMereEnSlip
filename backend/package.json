@@ -4,7 +4,8 @@
   "description": "backend of TaMereEnSlip",
   "scripts": {
     "start": "node app",
-    "devStart": "nodemon app"
+    "devStart": "nodemon app",
+    "production_build": "echo 'HELLO' > ./test.txt && echo 'Wordl' > ./diu.txt"
   },
   "repository": {
     "type": "git",
