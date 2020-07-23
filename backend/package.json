@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node app",
     "devStart": "nodemon app",
+    "dev_docker_start": "docker stack deploy -c docker-compose-swarm.yml app",
+    "dev_docker_stop": "docker stack rm app",
     "production_build": "echo 'HELLO' > ./test.txt && echo 'Wordl' > ./diu.txt"
   },
   "repository": {

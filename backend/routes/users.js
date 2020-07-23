@@ -48,8 +48,6 @@ router.post('/new', async (req, res) => {
         console.log(e);
         res.sendStatus(500);
     }
-
-    res.sendStatus(500);
 });
 
 router.put('/:id/customCards', customMiddlewares.authPlayer, async (req, res) => {

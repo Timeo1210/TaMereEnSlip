@@ -54,8 +54,7 @@ npm install
 ##### You first need to build image of the project:
 ```
 // in /backend folder
-docker build .
-docker tag [imageID] app:[project_version]
+docker build -tag app:[project_version] . 
 ```
 *You can save the image and export to your prod server and load after the image*
 *Most importante thing is to have the tag attributs for the docker-compose.yml file*
