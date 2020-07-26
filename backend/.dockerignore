@@ -3,4 +3,6 @@ node_modules
 *.tar
 .eslintrc.js
 launch.sh
+launch_default.sh
+cardsList.csv
 .gitignore

@@ -5,6 +5,9 @@ const Card = require('../models/Card');
 const PeopleCard = require('../models/PeopleCard');
 const ObjectCard = require('../models/ObjectCard');
 
+const fs = require('fs');
+const path = require('path')
+
 router.get('/', async (req, res) => {
     const cards = await Card.find();
 
@@ -72,5 +75,29 @@ router.get('/:id', async (req, res) => {
         "data": JSON.stringify(card),
     });
 });
+
+router.post('/temp', async (req, res) => {
+    const crendentials = req.query.password;
+    if (crendentials !== process.env.BACKUP_PASSWORD) return res.sendStatus(403);
+    const rawData = fs.readFileSync(`${path.dirname(__dirname)}/cardsList.csv`).toString();
+    const rowInData = rawData.split("\n").map((elem) => elem.replace(/(\r\n|\n|\r)/gm, ""));
+    const { index } = req.query;
+    const caseInRow = rowInData[index].split(',');
+    const people = caseInRow[1];
+    const object = caseInRow[3];
+    const newPeopleCard = new Card({
+        type: "people",
+        isCustom: false,
+        content: people,
+    });
+    const newObjectCard = new Card({
+        type: "object",
+        isCustom: false,
+        content: object
+    }); 
+    await newPeopleCard.save()
+    await newObjectCard.save();
+    res.sendStatus(200)
+})
 
 module.exports = router;
