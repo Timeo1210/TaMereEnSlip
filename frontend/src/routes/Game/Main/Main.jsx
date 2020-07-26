@@ -137,7 +137,6 @@ function PlayerList(props) {
         )
     } else {
         return (
-            // .filter((elem) => elem._id !== props.playerId)
             <div className={styles.playersList}>
                 {props.players.filter((elem) => elem._id !== props.playerId).map((elem, index) => {
                     return <PlayerItem key={index} player={elem} />

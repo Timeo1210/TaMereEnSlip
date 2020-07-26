@@ -13,6 +13,14 @@ const setHeaders = (req, res, next) => {
     }
 };
 
+const setAllCardsInReq = async (req, res, next) => {
+    const cards = await Card.find({
+        isCustom: false
+    });
+    req.cards = cards;
+    next();
+}
+
 const authPlayer = async (req, res, next) => {
     const username = req.header('username');
     const socketId = req.header('socketid');
@@ -82,6 +90,7 @@ const leavePlayerFromRoom = async (player, room) => {
 
 module.exports = {
     setHeaders,
+    setAllCardsInReq,
     authPlayer,
     authAdminPlayer,
     leavePlayerFromRoom,

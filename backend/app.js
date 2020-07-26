@@ -18,6 +18,7 @@ const usersRouter = require('./routes/users');
 
 app.use(express.urlencoded({extended: true}));
 app.use(customMiddlewares.setHeaders);
+app.use(customMiddlewares.setAllCardsInReq);
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_URL, {
@@ -45,3 +46,7 @@ app.use('/users', usersRouter);
 
 server.listen(process.env.PORT || 4000);
 initServer()
+/* Uncoment to ard all cards in cardsList.csv
+const addCards = require('./configs/addCardsFromCSV');
+addCards();
+*/

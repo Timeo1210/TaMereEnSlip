@@ -6,6 +6,12 @@ const Player = require('../models/Player');
 const Room = require('../models/Room');
 const middlewares = require('../configs/middlewares');
 
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 router.get('/', async (req, res) => {
     const rooms = (await Room.find().lean()).sort((a, b) => {
         const nA = a.isJoinable === true ? -1 : 1;
@@ -132,7 +138,21 @@ router.put('/:id/start', customMiddlewares.authAdminPlayer, async (req, res) => 
                 }));
                 req.room.cardsCanBeSetBy = cardsCanBeSetBy;
                 await req.room.save();
+            } else {
+                const peopleCards = req.cards.filter((card) => card.type === 'people');
+                const objectCards = req.cards.filter((card) => card.type === 'object');
+                await Promise.all(req.room.players.map(async (elem, index) => {
+                    const player = await Player.findById(elem);
+                    const randomPeopleNumber = getRandomInt(0, peopleCards.length)
+                    const randomObjectNumber = getRandomInt(0, objectCards.length)
+                    console.log(randomPeopleNumber)
+                    player.cards = [peopleCards[randomPeopleNumber], objectCards[randomObjectNumber]]
+                    await player.save()
+                }));
+                req.room.isGameHasStart = true;
+                await req.room.save()
             }
+            console.log(req.room);
             req.socketio.in(`${req.room.id}`).emit('GET:/room');
             res.sendStatus(200);
         } else {
