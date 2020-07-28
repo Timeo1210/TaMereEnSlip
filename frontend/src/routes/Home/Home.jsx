@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './Home.module.css';
 
+import styles from './Home.module.css';
 import CreatePlayer from './CreatePlayer';
 import RoomsJoin from './RoomsJoin';
 

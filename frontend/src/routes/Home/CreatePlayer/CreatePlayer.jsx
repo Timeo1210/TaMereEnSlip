@@ -1,11 +1,12 @@
 import React, { useRef, useContext, useState } from 'react';
+import { Zoom } from '@material-ui/core';
 
+import axios from 'axios';
+import { config } from '../../../config';
 import styles from './CreatePlayer.module.css';
+import Warning from '../../../assets/warning.svg';
 import { SocketContext } from '../../Contexts/SocketContext';
 import { PlayerContext } from '../../Contexts/PlayerContext';
-import { config } from '../../../config';
-import Warning from '../../../assets/warning.svg';
-import axios from 'axios';
 import ChooseImageProfil from './ChooseImageProfil';
 
 function CreatePlayer(props) {
@@ -17,6 +18,7 @@ function CreatePlayer(props) {
     const [invalidPlayer, setInvalidPlayer] = useState(false);
     const [errorMessage, setErrorMessage] = useState("L'utilisateur ne correspond pas a vous ou n'existe pas");
     const [chooseImageProfil, setChooseImageProfil] = useState(false);
+    const [ isPlayerLogged, setIsPlayerLogged ] = useState(false);
 
     const socketContext = useContext(SocketContext);
     const playerContext = useContext(PlayerContext);
@@ -44,10 +46,11 @@ function CreatePlayer(props) {
         pseudoRef.current.value = '';
         pseudoRef.current.disabled = true;
         buttonSubmitRef.current.disabled = true;
-        containerRef.current.setAttribute('style', 'transform: scaleY(0)');
+        setIsPlayerLogged(true)
+        // containerRef.current.setAttribute('style', 'transform: scaleY(0)');
         setTimeout(() => {
             handleIsPlayerLogged();
-        }, 1000);
+        }, 500);
     };
     const fetchLogin = (username, socketid, newSocketId = socketContext.id) => {
         axios({
@@ -106,32 +109,34 @@ function CreatePlayer(props) {
     }
 
     return (
-        <div ref={containerRef} className={styles.container}>
-            {invalidPlayer && (
-                <>
-                    <div className="globalWarning">
-                        <div>
-                            <img src={Warning} alt="warning"/>
-                            <span>Erreur :</span>
+        <Zoom in={!isPlayerLogged} timeout={{appear: 0, exit: 500}}>
+            <div ref={containerRef} className={styles.container}>
+                {invalidPlayer && (
+                    <>
+                        <div className="globalWarning">
+                            <div>
+                                <img src={Warning} alt="warning"/>
+                                <span>Erreur :</span>
+                            </div>
+                            <p>{errorMessage}</p>
+                            <button onClick={handleCreatePlayerButton} className={styles.createPlayerButton}>Créer un compte</button>
                         </div>
-                        <p>{errorMessage}</p>
-                        <button onClick={handleCreatePlayerButton} className={styles.createPlayerButton}>Créer un compte</button>
-                    </div>
-                    {chooseImageProfil && <ChooseImageProfil allImages={allImages} handleCreatePlayer={handleCreatePlayer} handleChooseImageProfilClose={handleChooseImageProfilClose} />}
-                </>
-            )}
-            <div className={styles.header}>
-                <div className={styles.header__bar} ></div>
-                <p className={styles.header__text} >Entrez votre pseudo :</p>
-                <div className={styles.header__bar} ></div>
+                        {chooseImageProfil && <ChooseImageProfil allImages={allImages} handleCreatePlayer={handleCreatePlayer} handleChooseImageProfilClose={handleChooseImageProfilClose} />}
+                    </>
+                )}
+                <div className={styles.header}>
+                    <div className={styles.header__bar} ></div>
+                    <p className={styles.header__text} >Entrez votre pseudo :</p>
+                    <div className={styles.header__bar} ></div>
+                </div>
+                <div className={styles.inputGroup}>
+                    <input ref={pseudoRef} onKeyPress={handleKeyPress} className={styles.inputGroup__input} type="text" placeholder="Pseudo" />
+                </div>
+                <div className={styles.loginSubmit}>
+                    <button ref={buttonSubmitRef} onClick={handleSubmit} className={styles.loginSubmit__input} type="text">Connexion</button>
+                </div>
             </div>
-            <div className={styles.inputGroup}>
-                <input ref={pseudoRef} onKeyPress={handleKeyPress} className={styles.inputGroup__input} type="text" placeholder="Pseudo" />
-            </div>
-            <div className={styles.loginSubmit}>
-                <button ref={buttonSubmitRef} onClick={handleSubmit} className={styles.loginSubmit__input} type="text">Connexion</button>
-            </div>
-        </div>
+        </Zoom>
     )
 }
 

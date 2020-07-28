@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Slide } from '@material-ui/core';
 
 import axios from 'axios';
 import styles from './RoomsJoin.module.css';
