@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 
 import axios from 'axios';
 import styles from './AdminTools.module.css';
@@ -16,14 +16,18 @@ import {
 } from '@material-ui/core';
 import { RoomContext } from '../../Contexts/RoomContext';
 import { PlayerContext } from '../../Contexts/PlayerContext';
+import { ReactComponent as CopySVG } from '../../../assets/copy.svg'
 
 function AdminTools() {
 
     const roomContext = useContext(RoomContext);
     const playerContext = useContext(PlayerContext);
 
+    const fakeTextCopyRef = useRef();
+
     const [ isPlayerAdmin, setIsPlayerAdmin ] = useState(false);
     const [ isOptionsChangable, setIsOptionsChangable ] = useState(true);
+    const [ sharableLinkCopyDisplay, setSharableLinkCopyDisplay ] = useState(false);
 
     const doPatchRequest = (param = {}) => {
         if (isOptionsChangable)  {
@@ -122,6 +126,15 @@ function AdminTools() {
                 console.log(error.response)
             })
         }
+    }
+    const handleSharableLink = () => {
+        setSharableLinkCopyDisplay(true)
+        setTimeout(() => {
+            setSharableLinkCopyDisplay(false)
+        }, 1000);
+        fakeTextCopyRef.current.focus()
+        fakeTextCopyRef.current.select()
+        document.execCommand('copy')
     }
 
     // check If Player Is Admin
@@ -237,6 +250,15 @@ function AdminTools() {
                             </FormControl>
                         }
                     />
+                    </div>
+                    <div className={styles.tools__sharableLink}>
+                        <textarea ref={fakeTextCopyRef} className={styles.tools__sharableLink__fakeButton} defaultValue={window.location.href}></textarea>
+                        <p onClick={handleSharableLink} className={styles.tools__sharableLink__text}>
+                            Copier le lien d'invitation <CopySVG />
+                            {sharableLinkCopyDisplay &&
+                            <span className={styles.tools__sharableLink__animText}>Copié !</span>
+                            }
+                        </p>
                     </div>
                     {roomContext.isJoinable && 
                     <div className={styles.tools__startGame}>
