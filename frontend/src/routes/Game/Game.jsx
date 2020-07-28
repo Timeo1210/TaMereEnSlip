@@ -28,7 +28,7 @@ function Game(props) {
 
     // logged player if not
     useEffect(() => {
-        if (roomId === undefined) return;
+        if (roomId === undefined || socketContext === null) return;
         if (playerContext._id !== null) setIsPlayerLogged(true)
         else if (localStorage.getItem('username') && localStorage.getItem('socketId')) {
             axios({
@@ -50,7 +50,7 @@ function Game(props) {
                 console.log(error.response)
             });
         }
-    }, [playerContext, roomId, socketContext.id]);
+    }, [playerContext, roomId, socketContext]);
 
     // join room and get get the room info
     useEffect(() => {
@@ -94,7 +94,7 @@ function Game(props) {
         }
     }, [isPlayerLogged, playerContext, roomId, socketContext, roomContext, props.history]);
 
-    if (isPlayerLogged) {
+    if (isPlayerLogged && roomContext.id !== null) {
         //if game wait for chosing card
         if (!roomContext.isJoinable && roomContext.isCustomCard && !roomContext.isGameHasStart) {
             return (

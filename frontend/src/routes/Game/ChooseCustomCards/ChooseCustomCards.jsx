@@ -17,6 +17,10 @@ function ChooseCustomCards() {
     const roomContext = useContext(RoomContext);
 
     const [ playerCardsChange, setPlayerCardsChange ] = useState();
+    const [ peopleTextErrorDisplay, setPeopleTextErrorDisplay ] = useState(false);
+    const [ objectTextErrorDisplay, setObjectTextErrorDisplay ] = useState(false);
+    const [ peopleTextErrorMessage, setPeopleTextErrorMessage ] = useState("");
+    const [ objectTextErrorMessage, setObjectTextErrorMessage ] = useState("");
 
     const peopleTextRef = useRef();
     const objectTextRef = useRef();
@@ -24,19 +28,55 @@ function ChooseCustomCards() {
     const handleSubmit = () => {
         const peopleText = peopleTextRef.current.value;
         const objectText = objectTextRef.current.value;
-        axios({
-            method: 'PUT',
-            url: `${config.ENDPOINT}/users/${playerCardsChange._id}/customCards`,
-            headers: {
-                "username": playerContext.name,
-                "socketid": playerContext.socketId
-            },
-            params: {
-                objectCardText: objectText,
-                peopleCardText: peopleText,
-                roomid: roomContext.id
-            }
-        });
+        const peopleValide = handlePeopleTextValidation(peopleText)
+        const objectValide = handleObjectTextValidation(objectText)
+        if (peopleValide && objectValide) {
+            axios({
+                method: 'PUT',
+                url: `${config.ENDPOINT}/users/${playerCardsChange._id}/customCards`,
+                headers: {
+                    "username": playerContext.name,
+                    "socketid": playerContext.socketId
+                },
+                params: {
+                    objectCardText: objectText,
+                    peopleCardText: peopleText,
+                    roomid: roomContext.id
+                }
+            });
+        }
+    }
+    const getErrorMessage = (text) => {
+        text = text.trim();
+        if (text === "") {
+            return "Le champ doit être rempli"
+        } else if (text.length > 30) {
+            return "Le champ est trop long"
+        }
+        return false
+    }
+    const handlePeopleTextValidation = (peopleText) => {
+        const errorMessage = getErrorMessage(peopleText)
+        if (errorMessage) {
+            console.log(peopleTextErrorDisplay)
+            if (!peopleTextErrorDisplay) setPeopleTextErrorDisplay(true);
+            if (errorMessage !== peopleTextErrorMessage) setPeopleTextErrorMessage(errorMessage);
+            return false
+        } else {
+            if (peopleTextErrorDisplay) setPeopleTextErrorDisplay(false);
+            return true
+        }
+    }
+    const handleObjectTextValidation = (objectText) => {
+        const errorMessage = getErrorMessage(objectText)
+        if (errorMessage) {
+            if (!objectTextErrorDisplay) setObjectTextErrorDisplay(true);
+            if (errorMessage !== objectTextErrorMessage) setObjectTextErrorMessage(errorMessage);
+            return false
+        } else {
+            if (objectTextErrorDisplay) setObjectTextErrorDisplay(false);
+            return true
+        }
     }
 
     useEffect(() => {
@@ -83,13 +123,19 @@ function ChooseCustomCards() {
                                 <p className={styles.header__text}>Personne :</p>
                             <div className={styles.header__bar}></div>
                         </div>
-                        <TextareaAutosize
-                            id="outlined-number"
-                            type="text"
-                            variant="outlined"
-                            className={styles.card__input}
-                            ref={peopleTextRef}
-                        />
+                        <div className={styles.card__controls}>
+                            <TextareaAutosize
+                                id="outlined-number"
+                                type="text"
+                                variant="outlined"
+                                className={styles.card__input}
+                                ref={peopleTextRef}
+                                onChange={(e) => handlePeopleTextValidation(e.target.value)}
+                            />
+                            <div className={styles.card__controls__error__wrapper}>
+                                <CardErrorDisplay display={peopleTextErrorDisplay} errorMessage={peopleTextErrorMessage} />
+                            </div>
+                        </div>
                     </div>
                     <div className={[styles.card, styles.card__object].join(' ')}>
                         <div className={[styles.header, styles.card__header].join(' ')}>
@@ -97,13 +143,19 @@ function ChooseCustomCards() {
                             <p className={styles.header__text}>Action :</p>
                             <div className={styles.header__bar}></div>
                         </div>
-                        <TextareaAutosize
-                            id="outlined-number"
-                            type="text"
-                            variant="outlined"
-                            className={styles.card__input}
-                            ref={objectTextRef}
-                        />
+                        <div className={styles.card__controls}>
+                            <TextareaAutosize
+                                id="outlined-number"
+                                type="text"
+                                variant="outlined"
+                                className={styles.card__input}
+                                ref={objectTextRef}
+                                onChange={(e) => handleObjectTextValidation(e.target.value)}
+                            />
+                            <div className={styles.card__controls__error__wrapper}>
+                                <CardErrorDisplay display={objectTextErrorDisplay} errorMessage={objectTextErrorMessage} />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.submit}>
@@ -119,6 +171,21 @@ function ChooseCustomCards() {
                 <CircularProgress />
             </div>
         );
+    }
+}
+
+function CardErrorDisplay(props) {
+
+    if (props.display) {
+        return (
+            <div className={styles.card__controls__error}>
+                {props.errorMessage}
+            </div>
+        )
+    } else {
+        return (
+            <></>
+        )
     }
 }
 
