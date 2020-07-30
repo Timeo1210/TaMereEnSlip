@@ -38,8 +38,10 @@ function RoomsJoin(props) {
     }
     const handleRoomJoin = (roomId) => {
         if (playerContext._id === null) return;
-
-        props.history.push(`/play?roomId=${roomId}`);
+        props.handleChangePage();
+        setTimeout(() => {
+            props.history.push(`/play?roomId=${roomId}`);
+        }, 500)
         
     }
     const handlePlayClick = () => {
@@ -62,25 +64,27 @@ function RoomsJoin(props) {
     }, []);
 
     return (
-        <div className={styles.container}>
-            <div className={styles.playInterface}>
-                <button onClick={handlePlayClick} className={styles.playInterface__play}>Jouer</button>
-                <div onClick={handleCreateGameButton} className={styles.playInterface__create}>
-                    <div className={styles.playInterface__create__button}>
-                        <CreateGameSVG />
-                        <span className={styles.playInterface__create__text}>Créer</span>
+        <Slide in={props.display} direction="right" timeout={500}>
+            <div className={styles.container}>
+                <div className={styles.playInterface}>
+                    <button onClick={handlePlayClick} className={styles.playInterface__play}>Jouer</button>
+                    <div onClick={handleCreateGameButton} className={styles.playInterface__create}>
+                        <div className={styles.playInterface__create__button}>
+                            <CreateGameSVG />
+                            <span className={styles.playInterface__create__text}>Créer</span>
+                        </div>
                     </div>
                 </div>
+                <div className={styles.header}>
+                    <div className={styles.header__bar}></div>
+                    <p className={styles.header__text}>Rejoindre une partie :</p>
+                    <div className={styles.header__bar}></div>
+                </div>
+                <RoomsList rooms={rooms} handleRoomJoin={handleRoomJoin} />
+                <CreateGame isOpen={isDialogOpen} handleIsOpen={handleCreateGameButton} handleRoomJoin={handleRoomJoin} />
+                {playerContext._id === null && <div className={styles.disabled}></div>}
             </div>
-            <div className={styles.header}>
-                <div className={styles.header__bar}></div>
-                <p className={styles.header__text}>Rejoindre une partie :</p>
-                <div className={styles.header__bar}></div>
-            </div>
-            <RoomsList rooms={rooms} handleRoomJoin={handleRoomJoin} />
-            <CreateGame isOpen={isDialogOpen} handleIsOpen={handleCreateGameButton} handleRoomJoin={handleRoomJoin} />
-            {playerContext._id === null && <div className={styles.disabled}></div>}
-        </div>
+        </Slide>
     )
 }
 // eslint-disable-next-line

@@ -3,7 +3,7 @@ const setValue = function(value) {
 }
 
 const config = {
-    ENDPOINT: /*"http://exnihilo.gq:4999",*/ "http://localhost:4999",
+    ENDPOINT: "http://exnihilo.gq:4999", /* "http://localhost:4999",*/
     BACKUP_ENDPOINT: "http://exnihilo.gq:4998",
     PLAYER_IMAGE_PATH: `${process.env.PUBLIC_URL}/assets/players`,
     setValue,

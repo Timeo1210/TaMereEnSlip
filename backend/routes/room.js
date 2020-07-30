@@ -84,6 +84,7 @@ router.put('/:id/join', customMiddlewares.authPlayer, async (req, res) => {
         player.turn = room.players.findIndex((elem) => elem._id === player._id);
         await player.save();
 
+        req.socketio.in(`${room.id}`).emit('GET:/room');
         res.sendStatus(200);
     } catch (e) {
         console.log(e);

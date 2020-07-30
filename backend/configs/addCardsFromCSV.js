@@ -25,7 +25,6 @@ function main() {
     async function addCard(card) {
         try {
             const value = await card.save();
-            console.log(value);
         } catch (e) {
             console.log(e)
         }

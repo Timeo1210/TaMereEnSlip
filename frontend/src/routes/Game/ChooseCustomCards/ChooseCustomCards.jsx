@@ -6,12 +6,13 @@ import styles from './ChooseCustomCards.module.css';
 import {
     CircularProgress,
     TextareaAutosize,
-    Button
+    Button,
+    Slide
 } from '@material-ui/core';
 import { RoomContext } from '../../Contexts/RoomContext';
 import { PlayerContext } from '../../Contexts/PlayerContext';
 
-function ChooseCustomCards() {
+function ChooseCustomCards(props) {
 
     const playerContext = useContext(PlayerContext);
     const roomContext = useContext(RoomContext);
@@ -31,19 +32,22 @@ function ChooseCustomCards() {
         const peopleValide = handlePeopleTextValidation(peopleText)
         const objectValide = handleObjectTextValidation(objectText)
         if (peopleValide && objectValide) {
-            axios({
-                method: 'PUT',
-                url: `${config.ENDPOINT}/users/${playerCardsChange._id}/customCards`,
-                headers: {
-                    "username": playerContext.name,
-                    "socketid": playerContext.socketId
-                },
-                params: {
-                    objectCardText: objectText,
-                    peopleCardText: peopleText,
-                    roomid: roomContext.id
-                }
-            });
+            props.setDisplayComponents(false);
+            setTimeout(() => {
+                axios({
+                    method: 'PUT',
+                    url: `${config.ENDPOINT}/users/${playerCardsChange._id}/customCards`,
+                    headers: {
+                        "username": playerContext.name,
+                        "socketid": playerContext.socketId
+                    },
+                    params: {
+                        objectCardText: objectText,
+                        peopleCardText: peopleText,
+                        roomid: roomContext.id
+                    }
+                });
+            }, 500);
         }
     }
     const getErrorMessage = (text) => {
@@ -58,7 +62,6 @@ function ChooseCustomCards() {
     const handlePeopleTextValidation = (peopleText) => {
         const errorMessage = getErrorMessage(peopleText)
         if (errorMessage) {
-            console.log(peopleTextErrorDisplay)
             if (!peopleTextErrorDisplay) setPeopleTextErrorDisplay(true);
             if (errorMessage !== peopleTextErrorMessage) setPeopleTextErrorMessage(errorMessage);
             return false
@@ -94,6 +97,9 @@ function ChooseCustomCards() {
                     }
                 }).then((data) => {
                     setPlayerCardsChange(data.data);
+                    setTimeout(() => {
+                        props.setDisplayComponents(true);
+                    }, 500);
                 }).catch((error) => {
                     console.log(error);
                 })
@@ -101,69 +107,72 @@ function ChooseCustomCards() {
         } catch (e) {
             console.log(e)
         }
+        // eslint-disable-next-line
     }, [playerContext, roomContext.cardsCanBeSetBy, playerCardsChange]);
 
 
     if (playerCardsChange) {
         return (
-            <div className={styles.container}>
-                <div className={styles.header}>
-                    <div className={styles.header__bar}></div>
-                    <p className={styles.header__text}>Choisissez les cartes pour :</p>
-                    <div className={styles.header__bar}></div>
-                </div>
-                <div className={styles.playerCardsChange}>
-                    <img src={middlewares.getImageProfil(playerCardsChange.imageProfil)} alt=""/>
-                    <p> {playerCardsChange.name} </p>
-                </div>
-                <div className={styles.cards}>
-                    <div className={[styles.card, styles.card__people].join(' ')}>
-                        <div className={[styles.header, styles.card__header].join(' ')}>
-                            <div className={styles.header__bar}></div>
-                                <p className={styles.header__text}>Personne :</p>
-                            <div className={styles.header__bar}></div>
+            <Slide in={props.display} direction="left" timeout={500}>
+                <div className={styles.container}>
+                    <div className={styles.header}>
+                        <div className={styles.header__bar}></div>
+                        <p className={styles.header__text}>Choisissez les cartes pour :</p>
+                        <div className={styles.header__bar}></div>
+                    </div>
+                    <div className={styles.playerCardsChange}>
+                        <img src={middlewares.getImageProfil(playerCardsChange.imageProfil)} alt=""/>
+                        <p> {playerCardsChange.name} </p>
+                    </div>
+                    <div className={styles.cards}>
+                        <div className={[styles.card, styles.card__people].join(' ')}>
+                            <div className={[styles.header, styles.card__header].join(' ')}>
+                                <div className={styles.header__bar}></div>
+                                    <p className={styles.header__text}>Personne :</p>
+                                <div className={styles.header__bar}></div>
+                            </div>
+                            <div className={styles.card__controls}>
+                                <TextareaAutosize
+                                    id="outlined-number"
+                                    type="text"
+                                    variant="outlined"
+                                    className={styles.card__input}
+                                    ref={peopleTextRef}
+                                    onChange={(e) => handlePeopleTextValidation(e.target.value)}
+                                />
+                                <div className={styles.card__controls__error__wrapper}>
+                                    <CardErrorDisplay display={peopleTextErrorDisplay} errorMessage={peopleTextErrorMessage} />
+                                </div>
+                            </div>
                         </div>
-                        <div className={styles.card__controls}>
-                            <TextareaAutosize
-                                id="outlined-number"
-                                type="text"
-                                variant="outlined"
-                                className={styles.card__input}
-                                ref={peopleTextRef}
-                                onChange={(e) => handlePeopleTextValidation(e.target.value)}
-                            />
-                            <div className={styles.card__controls__error__wrapper}>
-                                <CardErrorDisplay display={peopleTextErrorDisplay} errorMessage={peopleTextErrorMessage} />
+                        <div className={[styles.card, styles.card__object].join(' ')}>
+                            <div className={[styles.header, styles.card__header].join(' ')}>
+                                <div className={styles.header__bar}></div>
+                                <p className={styles.header__text}>Action :</p>
+                                <div className={styles.header__bar}></div>
+                            </div>
+                            <div className={styles.card__controls}>
+                                <TextareaAutosize
+                                    id="outlined-number"
+                                    type="text"
+                                    variant="outlined"
+                                    className={styles.card__input}
+                                    ref={objectTextRef}
+                                    onChange={(e) => handleObjectTextValidation(e.target.value)}
+                                />
+                                <div className={styles.card__controls__error__wrapper}>
+                                    <CardErrorDisplay display={objectTextErrorDisplay} errorMessage={objectTextErrorMessage} />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className={[styles.card, styles.card__object].join(' ')}>
-                        <div className={[styles.header, styles.card__header].join(' ')}>
-                            <div className={styles.header__bar}></div>
-                            <p className={styles.header__text}>Action :</p>
-                            <div className={styles.header__bar}></div>
-                        </div>
-                        <div className={styles.card__controls}>
-                            <TextareaAutosize
-                                id="outlined-number"
-                                type="text"
-                                variant="outlined"
-                                className={styles.card__input}
-                                ref={objectTextRef}
-                                onChange={(e) => handleObjectTextValidation(e.target.value)}
-                            />
-                            <div className={styles.card__controls__error__wrapper}>
-                                <CardErrorDisplay display={objectTextErrorDisplay} errorMessage={objectTextErrorMessage} />
-                            </div>
-                        </div>
+                    <div className={styles.submit}>
+                        <Button onClick={handleSubmit} variant="contained" color="primary">
+                            CHOISIR
+                        </Button>
                     </div>
                 </div>
-                <div className={styles.submit}>
-                    <Button onClick={handleSubmit} variant="contained" color="primary">
-                        CHOISIR
-                    </Button>
-                </div>
-            </div>
+            </Slide>
         )
     } else {
         return (

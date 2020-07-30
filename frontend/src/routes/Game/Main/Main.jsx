@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom';
 import {
     Button,
     LinearProgress,
-    CircularProgress
+    CircularProgress,
+    Slide
 } from '@material-ui/core';
 
 import axios from 'axios';
@@ -29,19 +30,25 @@ function Main(props) {
         socketContext.emit(`TOROOM::TIMER:${statusText}`, timerTime);
     }
     const handleLeave = () => {
+        props.setDisplayComponents(false);
+        setTimeout(() => {
+            window.location.replace("/");
+        }, 500)
         //force not to save context
-        window.location.replace("/");
     }
     const handleRematch = () => {
-        axios({
-            method: 'PUT',
-            url: `${config.ENDPOINT}/rooms/${roomContext._id}/rematch`,
-            headers: {
-                "username": playerContext.name,
-                "socketid": playerContext.socketId,
-                "roomid": roomContext._id
-            },
-        });
+        props.setDisplayComponents(false);
+        setTimeout(() => {
+            axios({
+                method: 'PUT',
+                url: `${config.ENDPOINT}/rooms/${roomContext._id}/rematch`,
+                headers: {
+                    "username": playerContext.name,
+                    "socketid": playerContext.socketId,
+                    "roomid": roomContext._id
+                },
+            });
+        }, 500);
     }
 
     //CHECK IF PLAYER IS ADMIN
@@ -89,16 +96,18 @@ function Main(props) {
                 roomContext.setContext({
                     players: newPlayers
                 });
+                props.setDisplayComponents(true)
             }
         }
-        if (roomContext.players[0] === String) fetchData();
-        fetchData()
+        if (typeof roomContext.players[0] == 'string') fetchData();
+
+        //eslint-disable-next-line
     }, [roomContext])
 
     //INIT INTERVAL FOR TIMER
     useInterval(() => {
         if (isTimerOn) {
-            if (timerTime === 0) setTimeout(() => setTimerTime(roomContext.timerStartTime), 5000)
+            if (timerTime === 0) setTimeout(() => setTimerTime(roomContext.timerStartTime), 3000)
             else if (timerTime > 0) setTimerTime(timerTime - 1)
         }
     }, isTimerOn ? 1000 : null);
@@ -106,23 +115,25 @@ function Main(props) {
     const timerStateText = isTimerOn ? 'PAUSE' : 'REPRENDRE';
     const progressValue = timerTime / roomContext.timerStartTime * 100;
     return (
-        <div className={styles.container}>
-            <LinearProgress className={styles.timerBar} variant="determinate" value={progressValue} />
-            <PlayerList players={roomContext.players} playerId={playerContext._id} />
-            {isPlayerAdmin && 
-            <Button onClick={handleTimerAction} variant="contained" color="primary">
-                {timerStateText}
-            </Button>}
-            <div className={styles.footerActions}>
+        <Slide in={props.display} direction="left" timeout={500}>
+            <div className={styles.container}>
+                <LinearProgress className={styles.timerBar} variant="determinate" value={progressValue} />
+                <PlayerList players={roomContext.players} playerId={playerContext._id} />
                 {isPlayerAdmin && 
-                <Button onClick={handleRematch} variant="contained" color="primary">
-                    REJOUER
+                <Button onClick={handleTimerAction} variant="contained" color="primary">
+                    {timerStateText}
                 </Button>}
-                <Button onClick={handleLeave} variant="contained" color="primary">
-                    QUITTER
-                </Button>
+                <div className={styles.footerActions}>
+                    {isPlayerAdmin && 
+                    <Button onClick={handleRematch} variant="contained" color="primary">
+                        REJOUER
+                    </Button>}
+                    <Button onClick={handleLeave} variant="contained" color="primary">
+                        QUITTER
+                    </Button>
+                </div>
             </div>
-        </div>
+        </Slide>
     )
 }
 // eslint-disable-next-line

@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useState } from 'react';
-import { Zoom } from '@material-ui/core';
+import { Zoom, Slide } from '@material-ui/core';
 
 import axios from 'axios';
 import { config } from '../../../config';
@@ -109,34 +109,36 @@ function CreatePlayer(props) {
     }
 
     return (
-        <Zoom in={!isPlayerLogged} timeout={{appear: 0, exit: 500}}>
-            <div ref={containerRef} className={styles.container}>
-                {invalidPlayer && (
-                    <>
-                        <div className="globalWarning">
-                            <div>
-                                <img src={Warning} alt="warning"/>
-                                <span>Erreur :</span>
+        <Slide in={props.display} direction="right" timeout={500}>
+            <Zoom in={!isPlayerLogged} timeout={{appear: 0, exit: 500}}>
+                <div ref={containerRef} className={styles.container}>
+                    {invalidPlayer && (
+                        <>
+                            <div className="globalWarning">
+                                <div>
+                                    <img src={Warning} alt="warning"/>
+                                    <span>Erreur :</span>
+                                </div>
+                                <p>{errorMessage}</p>
+                                <button onClick={handleCreatePlayerButton} className={styles.createPlayerButton}>Créer un compte</button>
                             </div>
-                            <p>{errorMessage}</p>
-                            <button onClick={handleCreatePlayerButton} className={styles.createPlayerButton}>Créer un compte</button>
-                        </div>
-                        {chooseImageProfil && <ChooseImageProfil allImages={allImages} handleCreatePlayer={handleCreatePlayer} handleChooseImageProfilClose={handleChooseImageProfilClose} />}
-                    </>
-                )}
-                <div className={styles.header}>
-                    <div className={styles.header__bar} ></div>
-                    <p className={styles.header__text} >Entrez votre pseudo :</p>
-                    <div className={styles.header__bar} ></div>
+                            {chooseImageProfil && <ChooseImageProfil allImages={allImages} handleCreatePlayer={handleCreatePlayer} handleChooseImageProfilClose={handleChooseImageProfilClose} />}
+                        </>
+                    )}
+                    <div className={styles.header}>
+                        <div className={styles.header__bar} ></div>
+                        <p className={styles.header__text} >Entrez votre pseudo :</p>
+                        <div className={styles.header__bar} ></div>
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <input ref={pseudoRef} onKeyPress={handleKeyPress} className={styles.inputGroup__input} type="text" placeholder="Pseudo" />
+                    </div>
+                    <div className={styles.loginSubmit}>
+                        <button ref={buttonSubmitRef} onClick={handleSubmit} className={styles.loginSubmit__input} type="text">Connexion</button>
+                    </div>
                 </div>
-                <div className={styles.inputGroup}>
-                    <input ref={pseudoRef} onKeyPress={handleKeyPress} className={styles.inputGroup__input} type="text" placeholder="Pseudo" />
-                </div>
-                <div className={styles.loginSubmit}>
-                    <button ref={buttonSubmitRef} onClick={handleSubmit} className={styles.loginSubmit__input} type="text">Connexion</button>
-                </div>
-            </div>
-        </Zoom>
+            </Zoom>
+        </Slide>
     )
 }
 
