@@ -9,6 +9,7 @@ const cardSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true,
+        maxlength: 30
     },
     isCustom: {
         type: Boolean,

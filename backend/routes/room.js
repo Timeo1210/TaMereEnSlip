@@ -75,7 +75,7 @@ router.put('/:id/join', customMiddlewares.authPlayer, async (req, res) => {
         if (
             room.players.includes(player._id)
             || room.players.length + 1 > room.maxPlayer
-            || !room.isJoinable
+            // || !room.isJoinable
         ) return res.sendStatus(201);
         room.players.push(player);
         await room.save();
@@ -84,6 +84,7 @@ router.put('/:id/join', customMiddlewares.authPlayer, async (req, res) => {
         player.turn = room.players.findIndex((elem) => elem._id === player._id);
         await player.save();
 
+        req.socketio.in(`${room.id}`).emit('GET:/room');
         res.sendStatus(200);
     } catch (e) {
         console.log(e);
@@ -145,14 +146,12 @@ router.put('/:id/start', customMiddlewares.authAdminPlayer, async (req, res) => 
                     const player = await Player.findById(elem);
                     const randomPeopleNumber = getRandomInt(0, peopleCards.length)
                     const randomObjectNumber = getRandomInt(0, objectCards.length)
-                    console.log(randomPeopleNumber)
                     player.cards = [peopleCards[randomPeopleNumber], objectCards[randomObjectNumber]]
                     await player.save()
                 }));
                 req.room.isGameHasStart = true;
                 await req.room.save()
             }
-            console.log(req.room);
             req.socketio.in(`${req.room.id}`).emit('GET:/room');
             res.sendStatus(200);
         } else {

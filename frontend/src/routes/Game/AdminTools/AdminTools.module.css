@@ -134,3 +134,33 @@
 .tools__startGame {
     margin: 1rem 0;
 }
+
+.tools__sharableLink {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.tools__sharableLink__fakeButton {
+    transform: translateX(100vw);
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.tools__sharableLink__text {
+    z-index: 1;
+}
+
+.tools__sharableLink__text svg {
+    height: 18px;
+    width: 18px;
+    transform: translateY(3px);
+    fill: whitesmoke;
+}
+
+.tools__sharableLink__animText {
+    font-size: 0.85rem;
+    margin-left: 5px;
+}

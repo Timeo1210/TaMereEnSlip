@@ -26,6 +26,7 @@ function CreateGame(props) {
     }
     const handleCreateGame = () => {
         const name = nameRef.current.value;
+        props.handleIsOpen()
 
         if (name.length > 0) {
             axios({

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 
 import axios from 'axios';
 import styles from './AdminTools.module.css';
@@ -13,17 +13,24 @@ import {
     FormControl,
     FormHelperText,
     Button,
+    Slide
 } from '@material-ui/core';
 import { RoomContext } from '../../Contexts/RoomContext';
 import { PlayerContext } from '../../Contexts/PlayerContext';
+import { SocketContext } from '../../Contexts/SocketContext';
+import { ReactComponent as CopySVG } from '../../../assets/copy.svg'
 
-function AdminTools() {
+function AdminTools(props) {
 
     const roomContext = useContext(RoomContext);
     const playerContext = useContext(PlayerContext);
+    const socketContext = useContext(SocketContext);
+
+    const fakeTextCopyRef = useRef();
 
     const [ isPlayerAdmin, setIsPlayerAdmin ] = useState(false);
     const [ isOptionsChangable, setIsOptionsChangable ] = useState(true);
+    const [ sharableLinkCopyDisplay, setSharableLinkCopyDisplay ] = useState(false);
 
     const doPatchRequest = (param = {}) => {
         if (isOptionsChangable)  {
@@ -107,21 +114,33 @@ function AdminTools() {
     const handleStart = () => {
         if (isOptionsChangable)  {
             setIsOptionsChangable(false);
-            axios({
-                method: 'PUT',
-                url: `${config.ENDPOINT}/rooms/${roomContext._id}/start`,
-                headers: {
-                    "username": playerContext.name,
-                    "socketid": playerContext.socketId,
-                    "roomid": roomContext._id
-                },
-            }).then((data) => {
-                setIsOptionsChangable(true)
-            }).catch((error) => {
-                setIsOptionsChangable(true)
-                console.log(error.response)
-            })
+            socketContext.emit('/room/components/leave', playerContext, roomContext.id)
+            setTimeout(() => {
+                axios({
+                    method: 'PUT',
+                    url: `${config.ENDPOINT}/rooms/${roomContext._id}/start`,
+                    headers: {
+                        "username": playerContext.name,
+                        "socketid": playerContext.socketId,
+                        "roomid": roomContext._id
+                    },
+                }).then((data) => {
+                    setIsOptionsChangable(true)
+                }).catch((error) => {
+                    setIsOptionsChangable(true)
+                    console.log(error.response)
+                })
+            }, 500)
         }
+    }
+    const handleSharableLink = () => {
+        setSharableLinkCopyDisplay(true)
+        setTimeout(() => {
+            setSharableLinkCopyDisplay(false)
+        }, 1000);
+        fakeTextCopyRef.current.focus()
+        fakeTextCopyRef.current.select()
+        document.execCommand('copy')
     }
 
     // check If Player Is Admin
@@ -135,115 +154,126 @@ function AdminTools() {
     
     if (isPlayerAdmin) {
         return (
-            <div className={styles.container}>
-                <div className={styles.header}>
-                    <div className={styles.header__bar}></div>
-                    <p className={styles.header__text}>Options de la partie :</p>
-                    <div className={styles.header__bar}></div>
-                </div>
-                {!isOptionsChangable && <CircularProgress color="secondary" /> }
-                <div className={`${styles.tools__container} 
-                                ${!isOptionsChangable ? styles.tools__disabled : ''}`}>
+            <Slide in={props.display} direction="left" timeout={500} >
+                <div className={styles.container}>
+                    <div className={styles.header}>
+                        <div className={styles.header__bar}></div>
+                        <p className={styles.header__text}>Options de la partie :</p>
+                        <div className={styles.header__bar}></div>
+                    </div>
+                    {!isOptionsChangable && <CircularProgress color="secondary" /> }
+                    <div className={`${styles.tools__container} 
+                                    ${!isOptionsChangable ? styles.tools__disabled : ''}`}>
 
-                    {!isOptionsChangable && <div className={styles.tools__surface}></div>}
-                    <div className={styles.tools__isCustomCards}>
-                        <FormControlLabel
-                            onChange={handleIsCustomCards}
-                            checked={roomContext.isCustomCard}
-                            control={
-                                <Checkbox />
-                            }
-                            labelPlacement="start"
-                            label="Utiliser des cartes customisées"
-                        />
-                    </div>
-                    <div className={styles.tools__maxPlayer}>
-                        <FormControlLabel
-                            onChange={handleMaxPlayer}
-                            value={roomContext.maxPlayer} 
-                            control={
-                                <Input className={styles.tools__maxPlayer__input} type="number" color="secondary" />
-                            }
-                            labelPlacement="start"
-                            label="Nombre de joueurs maximum :"
-                        />
-                    </div>
-                    <div className={styles.tools__timerStartTime}>
-                        <FormControlLabel
-                            onChange={handleTimerStartTime}
-                            value={roomContext.timerStartTime} 
-                            control={
-                                <Input className={styles.tools__timerStartTime__input} type="number" color="secondary" />
-                            }
-                            labelPlacement="start"
-                            label="Temps par tour (s) :"
-                        />
-                    </div>
-                    <div className={styles.tools__isPrivate}>
+                        {!isOptionsChangable && <div className={styles.tools__surface}></div>}
+                        <div className={styles.tools__isCustomCards}>
+                            <FormControlLabel
+                                onChange={handleIsCustomCards}
+                                checked={roomContext.isCustomCard}
+                                control={
+                                    <Checkbox />
+                                }
+                                labelPlacement="start"
+                                label="Utiliser des cartes customisées"
+                            />
+                        </div>
+                        <div className={styles.tools__maxPlayer}>
+                            <FormControlLabel
+                                onChange={handleMaxPlayer}
+                                value={roomContext.maxPlayer} 
+                                control={
+                                    <Input className={styles.tools__maxPlayer__input} type="number" color="secondary" />
+                                }
+                                labelPlacement="start"
+                                label="Nombre de joueurs maximum :"
+                            />
+                        </div>
+                        <div className={styles.tools__timerStartTime}>
+                            <FormControlLabel
+                                onChange={handleTimerStartTime}
+                                value={roomContext.timerStartTime} 
+                                control={
+                                    <Input className={styles.tools__timerStartTime__input} type="number" color="secondary" />
+                                }
+                                labelPlacement="start"
+                                label="Temps par tour (s) :"
+                            />
+                        </div>
+                        <div className={styles.tools__isPrivate}>
+                            <FormControlLabel 
+                                onChange={handleIsPrivate}
+                                value={roomContext.isPrivate}
+                                control={
+                                    <Checkbox />
+                                }
+                                labelPlacement="start"
+                                label="Partie Privée :"
+                            />
+                        </div>
+                        <div className={styles.tools__setAdmin}>
                         <FormControlLabel 
-                            onChange={handleIsPrivate}
-                            value={roomContext.isPrivate}
-                            control={
-                                <Checkbox />
-                            }
                             labelPlacement="start"
-                            label="Partie Privée :"
+                            label="Ajouter un admin :"
+                            control={
+                                <FormControl className={styles.tools__setAdmin__select}>
+                                    <InputLabel htmlFor="setAdmin-pseudo-select">Pseudo</InputLabel>
+                                    <NativeSelect
+                                        value={''}
+                                        onChange={handleSetAdmin}
+                                        inputProps={{
+                                            id: 'setAdmin-pseudo-select',
+                                        }}
+                                    >
+                                        <option aria-label="None" value="" />
+                                        {roomContext.players.filter((elem) => roomContext.admins.indexOf(elem._id) === -1 ? true : false ).map((elem, index) => {
+                                            return <option key={index} value={elem._id} >{elem.name}</option>
+                                        })}
+                                    </NativeSelect>
+                                    <FormHelperText>Cette action est definitive</FormHelperText>
+                                </FormControl>
+                            }
                         />
+                        </div>
+                        <div className={styles.tools__kickPlayer}>
+                        <FormControlLabel 
+                            labelPlacement="start"
+                            label="Kick un joueur :"
+                            control={
+                                <FormControl className={styles.tools__kickPlayer__select}>
+                                    <InputLabel htmlFor="kickPlayer-pseudo-select">Pseudo</InputLabel>
+                                    <NativeSelect
+                                        value={''}
+                                        onChange={handleKickPlayer}
+                                        inputProps={{
+                                            id: 'kickPlayer-pseudo-select',
+                                        }}
+                                    >
+                                        <option aria-label="None" value="" />
+                                        {roomContext.players.map((elem, index) => {
+                                            return <option key={index} value={elem._id} >{elem.name}</option>
+                                        })}
+                                    </NativeSelect>
+                                    <FormHelperText>Cette action est definitive</FormHelperText>
+                                </FormControl>
+                            }
+                        />
+                        </div>
+                        <div className={styles.tools__sharableLink}>
+                            <textarea ref={fakeTextCopyRef} className={styles.tools__sharableLink__fakeButton} defaultValue={window.location.href}></textarea>
+                            <p onClick={handleSharableLink} className={styles.tools__sharableLink__text}>
+                                Copier le lien d'invitation <CopySVG />
+                                {sharableLinkCopyDisplay &&
+                                <span className={styles.tools__sharableLink__animText}>Copié !</span>
+                                }
+                            </p>
+                        </div>
+                        {roomContext.isJoinable && 
+                        <div className={styles.tools__startGame}>
+                            <Button onClick={handleStart} variant="contained" color="primary" >Commencer</Button>
+                        </div>}
                     </div>
-                    <div className={styles.tools__setAdmin}>
-                    <FormControlLabel 
-                        labelPlacement="start"
-                        label="Ajouter un admin :"
-                        control={
-                            <FormControl className={styles.tools__setAdmin__select}>
-                                <InputLabel htmlFor="setAdmin-pseudo-select">Pseudo</InputLabel>
-                                <NativeSelect
-                                    value={''}
-                                    onChange={handleSetAdmin}
-                                    inputProps={{
-                                        id: 'setAdmin-pseudo-select',
-                                    }}
-                                >
-                                    <option aria-label="None" value="" />
-                                    {roomContext.players.filter((elem) => roomContext.admins.indexOf(elem._id) === -1 ? true : false ).map((elem, index) => {
-                                        return <option key={index} value={elem._id} >{elem.name}</option>
-                                    })}
-                                </NativeSelect>
-                                <FormHelperText>Cette action est definitive</FormHelperText>
-                            </FormControl>
-                        }
-                    />
-                    </div>
-                    <div className={styles.tools__kickPlayer}>
-                    <FormControlLabel 
-                        labelPlacement="start"
-                        label="Kick un joueur :"
-                        control={
-                            <FormControl className={styles.tools__kickPlayer__select}>
-                                <InputLabel htmlFor="kickPlayer-pseudo-select">Pseudo</InputLabel>
-                                <NativeSelect
-                                    value={''}
-                                    onChange={handleKickPlayer}
-                                    inputProps={{
-                                        id: 'kickPlayer-pseudo-select',
-                                    }}
-                                >
-                                    <option aria-label="None" value="" />
-                                    {roomContext.players.map((elem, index) => {
-                                        return <option key={index} value={elem._id} >{elem.name}</option>
-                                    })}
-                                </NativeSelect>
-                                <FormHelperText>Cette action est definitive</FormHelperText>
-                            </FormControl>
-                        }
-                    />
-                    </div>
-                    {roomContext.isJoinable && 
-                    <div className={styles.tools__startGame}>
-                        <Button onClick={handleStart} variant="contained" color="primary" >Commencer</Button>
-                    </div>}
                 </div>
-            </div>
+            </Slide>
         );
     } else {
         return (

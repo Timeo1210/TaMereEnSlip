@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { Slide } from '@material-ui/core';
 
 import axios from 'axios';
 import styles from './PlayerWaitingList.module.css';
@@ -6,7 +7,7 @@ import { CircularProgress } from '@material-ui/core';
 import { config, middlewares } from '../../../config';
 import { RoomContext } from '../../Contexts/RoomContext';
 
-function PlayerWaitingList() {
+function PlayerWaitingList(props) {
 
     const roomContext = useContext(RoomContext);
 
@@ -28,24 +29,30 @@ function PlayerWaitingList() {
                     roomContext.setContext({
                         players: newPlayers,
                     });
+                    setTimeout(() => {
+                        props.setDisplayComponents(true);
+                    }, 500);
                 })
                 .catch((error) => {
                     console.log(error)
                 })
             }
         }
+    // eslint-disable-next-line
     }, [roomContext]);
 
     if (roomContext.players !== null && typeof roomContext.players[0] === 'object') {
         return (
-            <div className={styles.container}>
-                <p>JOUEURS :</p>
-                <div className={styles.playersContainer}>
-                    {roomContext.players.map((player, index) => {
-                        return <PlayerDiv key={index} player={player} />
-                    })}
+            <Slide in={props.display} direction="left" timeout={{appear: 500, enter: 500, exit: 500}}>
+                <div className={styles.container}>
+                    <p>JOUEURS :</p>
+                    <div className={styles.playersContainer}>
+                        {roomContext.players.map((player, index) => {
+                            return <PlayerDiv key={index} player={player} />
+                        })}
+                    </div>
                 </div>
-            </div>
+            </Slide>
         );
     } else {
         return (

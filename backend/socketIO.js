@@ -19,6 +19,14 @@ function ioMiddleware(io) {
             }
         });
 
+        socket.on('/room/components/leave', async (playerInfo, roomId) => {
+            const player = await authPlayer(playerInfo);
+            const room = await Room.findById(roomId);
+            if (room.admins.includes(player._id)) {
+                io.in(`${roomId}`).emit('GET:/room/components/leave');
+            }
+        })
+
         socket.on('TOROOM::TIMER:RESUME', (data) => {
             const socketRooms = Object.keys(socket.rooms);
             const socketRoom = socketRooms.filter((elem) => elem !== socket.id)[0];
