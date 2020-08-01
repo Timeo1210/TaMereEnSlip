@@ -4,5 +4,4 @@ node_modules
 .eslintrc.js
 launch.sh
 launch_default.sh
-cardsList.csv
 .gitignore
