@@ -41,10 +41,14 @@ class Home extends React.Component {
 
     render() {
         const { isPlayerLogged, displayComponents } = this.state;
+        const roomJoinStyles = {}
+        if (isPlayerLogged) {
+            roomJoinStyles.height = "100%";
+        }
         return (
             <div className={styles.container}>
                 { !isPlayerLogged && <CreatePlayer handleIsPlayerLogged={this.handleIsPlayerLogged} display={displayComponents} />}
-                <RoomsJoin isPlayerLogged={isPlayerLogged} display={displayComponents} handleChangePage={this.handleChangePage} />
+                <RoomsJoin styles={roomJoinStyles} isPlayerLogged={isPlayerLogged} display={displayComponents} handleChangePage={this.handleChangePage} />
             </div>
         );
     }

@@ -98,6 +98,9 @@ router.delete('/:id/leave', customMiddlewares.authPlayer, async (req, res) => {
         const { player } = req;
         const middlewareStatus = await middlewares.leavePlayerFromRoom(player, room);
         if (!middlewareStatus) return res.sendStatus(401);
+        if (room.players.length === 0) {
+            await room.delete();
+        }
         req.socketio.in(`${room.id}`).emit('GET:/room');
         res.sendStatus(200);
     } catch (e) {
