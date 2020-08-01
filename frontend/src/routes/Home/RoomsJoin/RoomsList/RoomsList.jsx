@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { middlewares } from '../../../../config';
 import styles from './RoomsList.module.css';
@@ -16,14 +16,22 @@ function RoomsList(props) {
 
 function ListComponent(props) {
 
+    const containerRef = useRef();
+
     const handleRoomJoin = () => {
         if (props.room.isJoinable && !props.room.isPrivate) {
             props.handleRoomJoin(props.room._id);
         }
     }
+    let roomName = props.room.name
+    if (containerRef.current) {
+        if (props.room.name.length > 10 && containerRef.current.offsetWidth < 400) {
+            roomName = `${props.room.name.slice(0, 10)}...`
+        }
+    }
 
     return (
-        <div onClick={handleRoomJoin} className={`${styles.room__container} 
+        <div ref={containerRef} onClick={handleRoomJoin} className={`${styles.room__container} 
                          ${props.room.isJoinable === false || props.room.isPrivate ? styles.room__disabled : ''}`}>
             <div className={styles.leftPart}>
                 <div className={styles.room__imageProfil}>
@@ -31,7 +39,7 @@ function ListComponent(props) {
                 </div>
                 <div className={styles.room__info}>
                     <div className={styles.room__info__title}>
-                        {props.room.name}
+                        {roomName}
                     </div>
                     {props.room.players.length !== 0 ? 
                     <div className={styles.room__info__players}>

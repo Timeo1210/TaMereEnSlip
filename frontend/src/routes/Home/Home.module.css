@@ -10,3 +10,11 @@
     justify-content: center;
     overflow: hidden;
 }
+
+@media screen and (max-width: 800px) {
+    .container {
+        box-sizing: border-box;
+        height: 100%;
+        width: 100vw !important;
+    }
+}

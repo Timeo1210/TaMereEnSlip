@@ -115,3 +115,23 @@
 .room__playersNumber span {
     color: white;
 }
+
+@media screen and (max-width: 800px) {
+
+    .rightPart > * {
+        margin-left: 0.5rem;
+    }
+
+    .room__isJoinable {
+        padding: 0.4rem;
+    }
+
+    .room__isJoinable svg {
+        height: 24px !important;
+        width: 24px !important;
+    }
+
+    .room__playersNumber {
+        margin-right: 1rem;
+    }
+}

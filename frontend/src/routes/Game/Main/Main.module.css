@@ -105,6 +105,7 @@
     font-size: 1.5rem;
     text-align: center;
     margin: 0 0.1rem;
+    overflow-wrap: break-word;
 }
 
 .header {
@@ -146,4 +147,21 @@
 
 .footerActions > *:not(:last-child) {
     margin-right: 1rem;
+}
+
+@media screen and (max-width: 800px) {
+
+    .container {
+        padding: 0.3rem;
+        max-width: 100vw;
+    }
+
+    .playersList {
+        max-width: 100vw;
+    }
+
+    .playersList > *:not(:last-child) {
+        margin-right: 0;
+    }
+
 }

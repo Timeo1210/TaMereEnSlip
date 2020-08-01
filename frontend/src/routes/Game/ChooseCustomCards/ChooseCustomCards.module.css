@@ -30,12 +30,6 @@
     background-color: #7b7b7b;
 }
 
-@media screen and (max-width: 400px) {
-    .header__bar {
-        display: none;
-    }
-}
-
 .header__text {
     display: inline-block;
     min-width: 245px;
@@ -149,4 +143,12 @@
 
 .submit {
     margin-top: 20px;
+}
+
+@media screen and (max-width: 800px) {
+
+.container {
+    max-width: 90vw;
+}
+
 }
