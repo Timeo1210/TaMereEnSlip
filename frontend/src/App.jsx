@@ -27,6 +27,7 @@ class App extends React.Component {
                         <RoomProvider>
                             <Switch>
                                 <Route exact path="/" component={Home} />
+                                <Route exact path="/index.html" component={Home} />
                                 <Route exact path="/play" component={Game} />
                                 <Route component={NotFound} />
                             </Switch>
