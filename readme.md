@@ -64,7 +64,7 @@ docker build -tag app:[project_version] .
 docker buildx create --name mybuilder
 docker buildx use mybuilder
 docker buildx inspect --bootstrap // not obligatory
-docker buildx build --platform linux/arm64 -t tamereenslip/0.1.0 . --push 
+docker buildx build --platform linux/arm64 -t tamereenslip/0.1.0 . > fast4info_0_1_0.tar
 ```
 
 #### In case your use some restrictions you can edit docker-compose-default.yml file :
