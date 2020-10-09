@@ -59,6 +59,14 @@ docker build -tag app:[project_version] .
 *You can save the image and export to your prod server and load after the image*
 *Most importante thing is to have the tag attributs for the docker-compose.yml file*
 
+##### Build for arm64
+```
+docker buildx create --name mybuilder
+docker buildx use mybuilder
+docker buildx inspect --bootstrap // not obligatory
+docker buildx build --platform linux/arm64 -t tamereenslip/0.1.0 . --push 
+```
+
 #### In case your use some restrictions you can edit docker-compose-default.yml file :
 
 This is an example of the docker-compose-swarm.yml file content:
